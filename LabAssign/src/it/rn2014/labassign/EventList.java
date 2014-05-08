@@ -1,8 +1,9 @@
 package it.rn2014.labassign;
 
+import java.util.Iterator;
 import java.util.PriorityQueue;
 
-public class EventList {
+public class EventList implements Iterable<Event>{
 
 	private PriorityQueue<Event> queue;
 	
@@ -17,10 +18,10 @@ public class EventList {
 	}
 	
 	public Event getEvent(){
-		return queue.poll();
+		return queue.peek();
 	}
 	
-	public Event getEventByRoad(int road){
+	public Event getFirstEventByRoad(int road){
 		for (Event e : queue){
 			if (e.getRoad() == road) return e;
 		}
@@ -28,6 +29,12 @@ public class EventList {
 	}
 	
 	public void updateEvent(Event e){
+		queue.remove(e);
 		queue.offer(e);
+	}
+
+	@Override
+	public Iterator<Event> iterator() {
+		return queue.iterator();
 	}
 }

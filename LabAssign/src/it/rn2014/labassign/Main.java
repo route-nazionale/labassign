@@ -1,7 +1,33 @@
+/*   This file is part of LabAssign
+ *
+ *   LabAssign is free software: you can redistribute it and/or modify
+ *   it under the terms of the GNU General Public License as published by
+ *   the Free Software Foundation, either version 3 of the License, or
+ *   (at your option) any later version.
+ *
+ *   LabAssign is distributed in the hope that it will be useful,
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *   GNU General Public License for more details.
+ *
+ *   You should have received a copy of the GNU General Public License
+ *   along with LabAssign.  If not, see <http://www.gnu.org/licenses/>.
+ * 
+ */
 package it.rn2014.labassign;
 
+/**
+ * Classe main per l'esecuzione dell'algoritmo di assegnazione dei
+ * rover/scolte partecipanti alla route nazionale ai vari laboratori.
+ * 
+ * @author Nicola Corti
+ */
 public class Main {
 
+	/**
+	 * Funzione main eseguita dal programma
+	 * @param args Elenco dei parametri
+	 */
 	public static void main(String[] args) {
 
 		RoverList rl = new RoverList(null);
@@ -28,15 +54,34 @@ public class Main {
 		System.exit(0);
 	}
 
+	/**
+	 * Funzione per calcolare l'assegnamento iniziale dei rover/scolte al laboratori
+	 * 
+	 * @param rl Elenco di rover partecipanti
+	 * @param el Elenco di eventi che devono essere assegnati
+	 */
 	private static void beginningAssignment(RoverList rl, EventList el) {
+		
+		// Cicla sui 3 giorni che devono essere assegnati.
 		for (int workingday = 1; workingday <= 3; workingday++){
+			
 			for (Rover r : rl){
-				Event e = el.getEventByRoad(r.getRandomRoad());
-				while (!r.isSuitable(e, workingday)){
-					e = el.getEventByRoad(r.getRandomRoad());
+				
+				// Sceglie una strada a caso fra quelle del rover e
+				// prova ad assegnargli un laboratorio
+				Event temp = null;
+				EventIteratorRoad eir = new EventIteratorRoad(el, workingday);
+				while(eir.hasNext()){
+					temp = eir.next();
+					if (r.isSuitable(temp, workingday)) break;
 				}
-				r.assignToEvent(workingday, e);
-				el.updateEvent(e);
+				
+				// Controllo se ho trovato una possibile associazione senno' genero un'eccezione.
+				if (temp == null || !eir.hasNext()) throw new RuntimeException("NO ASSOCIATION POSSIBLE");
+				else {
+					r.assignToEvent(workingday, temp);
+					el.updateEvent(temp);
+				}
 			}
 		}
 	}
