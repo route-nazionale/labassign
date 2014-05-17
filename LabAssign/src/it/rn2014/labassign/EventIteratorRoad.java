@@ -18,13 +18,28 @@ package it.rn2014.labassign;
 
 import java.util.Iterator;
 
+/**
+ * Iteratore sugli eventi in relazione che li filtra in base ad una singola strada di coraggio.
+ * 
+ * @author Nicola Corti
+ */
 public class EventIteratorRoad implements Iterator<Event> {
 
+	/** Strada di coraggio */
 	private int road;
+	/** Iteratore su eventi desiderato */
 	private Iterator<Event> it;
 	
+	/** IMPLEMENTAZIONE: evento che è attualmente puntato all'interno dell'iteratore*/
 	private Event actual;
 	
+	/**
+	 * Costruttore base che inizializza il nuovo iteratore, partendo da una lista di eventi,
+	 * ed una strada di coraggio da utilizzare per filtrare.
+	 * 
+	 * @param l Lista di eventi
+	 * @param road Strada di coraggio da usare per filtrare
+	 */
 	public EventIteratorRoad(EventList l, int road){
 		this.it = l.iterator();
 		this.road = road;

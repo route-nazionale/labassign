@@ -1,27 +1,64 @@
-/**
- * 
+/*   This file is part of LabAssign
+ *
+ *   LabAssign is free software: you can redistribute it and/or modify
+ *   it under the terms of the GNU General Public License as published by
+ *   the Free Software Foundation, either version 3 of the License, or
+ *   (at your option) any later version.
+ *
+ *   LabAssign is distributed in the hope that it will be useful,
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *   GNU General Public License for more details.
+ *
+ *   You should have received a copy of the GNU General Public License
+ *   along with LabAssign.  If not, see <http://www.gnu.org/licenses/>.
  */
 package it.rn2014.labassign;
 
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Classe che rappresenta un evento generico che deve essere assegnato ad un rover, con tutti
+ * i dati relativi a nome, strada di coraggio, etc...
+ * 
+ * @author Nicola Corti
+ */
 public class Event implements Comparable<Event> {
 
+	/** Nome dell'evento */
 	private String name;
+	/** Strada di coraggio a cui si riferisce l'evento */
 	private int road;
 	
+	/** Numero massimo di partecipanti */
 	private int maxpartecipant;
+	/** Numero minimo di partecipanti ammesso */
 	private int minpartecipant;
 	
+	/** Gruppo organizzatore */
 	private Group organizer;
 	
+	/** Elenco dei partecipanti alla prima realizzazione dell'evento */
 	private List<Rover> partecipant1;
+	/** Elenco dei partecipanti alla seconda realizzazione dell'evento */
 	private List<Rover> partecipant2;
+	/** Elenco dei partecipanti alla terza realizzazione dell'evento */
 	private List<Rover> partecipant3;
 	
+	/** IMPLEMENTAZIONE Indica il giorno con cui si sta lavorando, al fine di 
+	 *  realizzare l'ordinamento fra due eventi */
 	private int workingday = 1;
 	
+	/**
+	 * Costruttore per generare un nuovo evento fornendo tutti i campi necessari
+	 * 
+	 * @param name Nome dell'evento
+	 * @param road Strada di coraggio
+	 * @param maxpartecipant Vincolo sul massimo dei partecipanti
+	 * @param minpartecipant Vincolo sul minimo dei paretcipanti
+	 * @param organizer Gruppo organizzatore dell'evento
+	 */
 	public Event(String name, int road, int maxpartecipant, int minpartecipant,
 			Group organizer) {
 		super();
@@ -35,10 +72,21 @@ public class Event implements Comparable<Event> {
 		this.partecipant3 = new ArrayList<>();
 	}
 
+	/**
+	 * Ritorna la strada di coraggio dell'evento
+	 * 
+	 * @return La strada di coraggio dell'evento
+	 */
 	public int getRoad() {
 		return road;
 	}
 	
+	/**
+	 * Controlla se un evento è full per un dato giorno in input
+	 * 
+	 * @param day Giorno per cui si vuole controllare
+	 * @return True se l'evento e full, false altrimenti
+	 */
 	public boolean isFull(int day){
 		switch (day) {
 		case 1: return partecipant1.size() >= maxpartecipant;
@@ -48,6 +96,12 @@ public class Event implements Comparable<Event> {
 		}
 	}
 	
+	/**
+	 * Controlla se un evento è ancora vuoto per un dato giorno in input
+	 * 
+	 * @param day Giorno per cui si vuole controllare
+	 * @return True se l'evento e ancora vuoto, false altrimenti
+	 */
 	public boolean isStillEmpty(int day){
 		switch (day) {
 		case 1: return partecipant1.size() <= minpartecipant;
@@ -57,6 +111,12 @@ public class Event implements Comparable<Event> {
 		}
 	}
 	
+	/**
+	 * Assegna all'evento un dato rover in un dato giorno.
+	 * 
+	 * @param day Giorno per cui si vuole assengnare
+	 * @param r Rover che si vuole assegnare
+	 */
 	public void assign(int day, Rover r){
 		switch (day) {
 		case 1: partecipant1.add(r); break;
@@ -65,6 +125,14 @@ public class Event implements Comparable<Event> {
 		}
 	}
 	
+	/**
+	 * Ritorna il numero di partecipanti dello stesso gemellaggio registrati in un dato giorno per
+	 * un evento.
+	 * 
+	 * @param day Giorno di cui si vuole controllare
+	 * @param r1 Rover di cui si vuole controllare
+	 * @return Il numero di partecipanti all'evento nel giorno DAY dello stesso gemellaggio di R1
+	 */
 	public int getPartecipantsTwinnings(int day, Rover r1) {
 		
 		List<Rover> list = null;
@@ -81,16 +149,35 @@ public class Event implements Comparable<Event> {
 		
 		return count;
 	}
+
+	/**
+	 * Aggiorna il working day.
+	 * Solamente a scopo IMPLEMENTATIVO.
+	 * 
+	 * @param day Nuovo working day
+	 */
+	protected void updateWorkingDay(int day) {
+		workingday = day;
+	}
 	
+	/**
+	 * Ritorna la stringa che rappresenta l'evento
+	 * @return stringa che rappresenta l'evento
+	 */
 	@Override
 	public String toString(){
 		return "Event " + name + " Organiz: " + organizer;
 	}
 
-	protected void updateWorkingDat(int day) {
-		workingday = day;
-	}
-	
+
+	/**
+	 * Metodo dell'interfaccia Comparable, che confronta due eventi, e ritorna quale dei due
+	 * è minore rispetto all'altro in relazione a:
+	 * - Se uno dei due eventi è ancora vuoto (numero di partecipanti ancora inferiore rispetto al limite)
+	 * - In base a quale dei due ha la lista dei partecipanti più ridotta
+	 * 
+	 * IMPLEMENTAZIONE: utilizza la variabile working day.
+	 */
 	@Override
 	public int compareTo(Event arg0) {
 		List<Rover> l1 = null;

@@ -12,7 +12,6 @@
  *
  *   You should have received a copy of the GNU General Public License
  *   along with LabAssign.  If not, see <http://www.gnu.org/licenses/>.
- * 
  */
 package it.rn2014.labassign;
 
