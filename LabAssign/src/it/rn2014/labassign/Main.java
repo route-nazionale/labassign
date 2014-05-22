@@ -41,7 +41,7 @@ public class Main {
 			System.out.println(g);
 		
 		RoverList rl = conn.getRovers(gl);
-		//rl.print();
+		rl.print();
 		
 		conn.close();
 		System.out.println("Connection closed");
