@@ -15,6 +15,9 @@
  */
 package it.rn2014.labassign;
 
+import java.util.HashSet;
+import java.util.List;
+
 /**
  * Classe main per l'esecuzione dell'algoritmo di assegnazione dei
  * rover/scolte partecipanti alla route nazionale ai vari laboratori.
@@ -29,6 +32,22 @@ public class Main {
 	 */
 	public static void main(String[] args) {
 
+		MySqlConnector conn = new MySqlConnector();
+		conn.connect();
+		
+		List<Group> gl = conn.getGroups();
+		
+		for (Group g: gl)
+			System.out.println(g);
+		
+		RoverList rl = conn.getRovers(gl);
+		//rl.print();
+		
+		conn.close();
+		System.out.println("Connection closed");
+		
+		
+		/*
 		RoverList rl = new RoverList(null);
 		EventList el = new EventList(null);
 		
@@ -37,7 +56,7 @@ public class Main {
 		double itercount = 0;
 		double globalsat = rl.totalSatisfaction()/rl.totalMaxSatisfaction();
 		while (itercount < Parameters.MAX_ITERATIONS && globalsat < Parameters.SATISFATION_THRESHOLD){
-			
+		*/
 			/* Si deve scrivere la procedura che:
 			 * - Pesca dalla lista di priorita' il ragazzo meno soddisfatto
 			 * - Va a capire quale e' il laboratorio che gli crea problemi
@@ -45,11 +64,11 @@ public class Main {
 			 * 		- Se si, prende il primo laboratorio per quella strada di coraggio e prova ad assegnarglielo. 
 			 * 		- Oppure prende il ragazzo piu' soddisfatto e prova a scambiare un laboratorio con lui.
 			 */
-			
+		/*	
 			itercount++;
 			globalsat = rl.totalSatisfaction()/rl.totalMaxSatisfaction();
 		}
-		
+		*/
 		System.exit(0);
 	}
 

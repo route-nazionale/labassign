@@ -33,17 +33,18 @@ public class RoverList implements Iterable<Rover> {
 	
 	/**
 	 * Costruttore che inizializza la lista dei rover da considerare.
-	 * I rover vengono caricati da un file che viene indicato come parametro.
-	 * @param file Path del file da cui devono essere caricati i rovers
 	 */
-	public RoverList(String file){
-		/* Ancora da decidere come importare i dati. */
+	public RoverList(){
 		queue = new PriorityQueue<>();
-		
-		/*
-		 * for (Lines in file)
-		 * 		queue.offer(new Event...)
-		 */
+	}
+	
+	/**
+	 * Metodo per aggiungere un rover alla lista se questo non e' ancora presente
+	 * 
+	 * @param r Rover da aggiungere
+	 */
+	public void addRover(Rover r){
+		if (!queue.contains(r)) queue.add(r);
 	}
 	
 	/**
@@ -107,5 +108,13 @@ public class RoverList implements Iterable<Rover> {
 	@Override
 	public Iterator<Rover> iterator() {
 		return queue.iterator();
+	}
+	
+	public void print(){
+		int i = 0;
+		for (Rover r: queue){
+			System.out.println(i);
+			i++;
+		}
 	}
 }

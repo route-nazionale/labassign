@@ -37,4 +37,14 @@ public class Parameters {
 	/** Numero massimo di partecipanti per lo stesso gemellaggio per tavola rotonda */
 	public static final int ROUNDTABLE_MAX_TWINNING_USER = 5;
 	
+	///////////////
+	// ACCESSO DB
+	///////////////
+	
+	public static final String DB_HOST = "localhost";
+	public static final String DB_USER = "nicolacorti";
+	public static final String DB_PASS = "***********";
+	public static final String DB_NAME = "provvisorio";
+	
+	
 }

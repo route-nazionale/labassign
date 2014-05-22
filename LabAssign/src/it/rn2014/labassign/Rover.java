@@ -29,6 +29,8 @@ package it.rn2014.labassign;
  */
 public class Rover implements Comparable<Rover> {
 
+	/** ID unico del rover */
+	private int id;
 	/** Nome del rs */
 	private String name;
 	/** Cognome del rs */
@@ -57,16 +59,17 @@ public class Rover implements Comparable<Rover> {
 	private boolean road5;
 	
 	/** Primo evento assegnato */
-	private Event assign1;
+	private Event assign1 = null;
 	/** Secondo evento assegnato */
-	private Event assign2;
+	private Event assign2 = null;
 	/** Terzo evento assegnato */
-	private Event assign3;
+	private Event assign3 = null;
 	
 	
 	/**
 	 * Costruttore di base per generare un nuovo rs a partira da dati di input
 	 * 
+	 * @param id Id univoco del rs
 	 * @param name Nome del rs
 	 * @param surname Cognome del rs
 	 * @param code Codice censimento
@@ -75,8 +78,9 @@ public class Rover implements Comparable<Rover> {
 	 * @param novice Novizio
 	 * @param group Gruppo di apparteneza
 	 */
-	public Rover(String name, String surname, double code, int age,
+	public Rover(int id, String name, String surname, double code, int age,
 			boolean handicap, boolean novice, Group group) {
+		this.id = id;
 		this.name = name;
 		this.surname = surname;
 		this.code = code;
@@ -260,7 +264,7 @@ public class Rover implements Comparable<Rover> {
 	@Override
 	public String toString() {
 		// TODO da completare
-		String result = name + " - " + surname + " - " + code + " - TOCOMPLETE ";
+		String result = id + " - " + name + " - " + surname + " - " + code + " - TOCOMPLETE ";
 		return result;
 	}
 
