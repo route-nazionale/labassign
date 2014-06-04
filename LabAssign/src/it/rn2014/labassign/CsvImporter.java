@@ -63,7 +63,12 @@ public class CsvImporter {
 				// Controllo inconsistenza se e' presente un altro vincolo
 				if (conn.executeCount("SELECT * FROM vincoli WHERE codicecensimento = '" + sep[3] + "'") > 0){		
 					String result = conn.executeString("SELECT turn" + sep[7] + " FROM vincoli 	WHERE codicecensimento = '" + sep[3] + "'");
-					if (result != null) System.err.println("PROBLEMA: " + sep[3] + " - " + sep[1] + ", " + sep[2] + ", " + sep[4]);
+					if (result != null) 
+						System.err.println("PROBLEMA VINCOLI: " + sep[3] + " - " + sep[1] + ", " + sep[2] + ", " + sep[4]);
+					else 
+						conn.update("UPDATE vincoli SET turn" + sep[7] + "='TEMP-RS-LAB-?-?-" + sep[5] + "' WHERE codicecensimento = '" + sep[3] + "'");
+					
+					continue;
 				}
 				
 				if (sep[7].contains("1"))
