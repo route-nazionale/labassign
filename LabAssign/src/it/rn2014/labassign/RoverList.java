@@ -113,8 +113,9 @@ public class RoverList implements Iterable<Rover> {
 	public void print(){
 		int i = 0;
 		for (Rover r: queue){
-			System.out.println(i);
+			System.out.println(r.getCode());
 			i++;
 		}
+		System.out.println("Total Rover " + i);
 	}
 }

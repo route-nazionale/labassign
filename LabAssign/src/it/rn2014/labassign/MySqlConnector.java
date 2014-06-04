@@ -8,8 +8,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mysql.jdbc.jdbc2.optional.SuspendableXAConnection;
-
 public class MySqlConnector {
 
 	private String JDBC_DRIVER = "com.mysql.jdbc.Driver";  
@@ -49,10 +47,10 @@ public class MySqlConnector {
 			
 			int column = rs.getMetaData().getColumnCount();
 			for(int i = 1; i <= column; i++){
-				System.out.print(rs.getMetaData().getColumnName(i) + ", ");
+				//System.out.print(rs.getMetaData().getColumnName(i) + ", ");
 			}
-			System.out.println();
-		
+			//System.out.println();
+			
 			while(rs.next()){
 				for(int i = 1; i <= column; i++){
 					System.out.print(rs.getString(i) + ", ");
@@ -97,7 +95,6 @@ public class MySqlConnector {
 				if (group == null) {
 					
 					System.err.println("GRUPPO " + idgroup);
-					System.err.println(gl);
 					ls.add(idgroup);
 					//throw new RuntimeException("GRUPPO NON PRESENTE NEL DB");
 				}
@@ -117,7 +114,6 @@ public class MySqlConnector {
 				
 				list.addRover(r);
 			}
-			System.err.println(ls);
 			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -165,5 +161,46 @@ public class MySqlConnector {
 			e.printStackTrace();
 		}
 		return list;
+	}
+
+	public void update(String string) {
+		try {
+			stat = conn.createStatement();
+			stat.executeUpdate(string);
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	
+		
+	}
+	
+	public int executeCount(String string) {
+		int size = 0;
+		try {
+			stat = conn.createStatement();
+			ResultSet rs = stat.executeQuery(string);
+			while (rs.next()) size++;			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return size;
+		
+	}
+	
+	public String executeString(String string) {
+		try {
+			stat = conn.createStatement();
+			ResultSet rs = stat.executeQuery(string);
+			rs.next();
+			System.out.println("RETURNING " + rs.getString(1));
+			return rs.getString(1);		
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 }

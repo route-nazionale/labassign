@@ -98,6 +98,14 @@ public class Rover implements Comparable<Rover> {
 	public Group getGroup(){ return group; }
 	
 	/**
+	 * Ritorna il codice censimento
+	 * 
+	 * @return Il codice censimento del ragazzo
+	 */
+	public double getCode(){ return code; }
+	
+	
+	/**
 	 * Ritorna la preferenza indicata relativa ad una delle 5 strade di coraggio
 	 * 
 	 * @param road Numero della strada di coraggio

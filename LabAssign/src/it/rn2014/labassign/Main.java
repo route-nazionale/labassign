@@ -15,7 +15,6 @@
  */
 package it.rn2014.labassign;
 
-import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -36,16 +35,13 @@ public class Main {
 		conn.connect();
 		
 		List<Group> gl = conn.getGroups();
-		
-		for (Group g: gl)
-			System.out.println(g);
-		
 		RoverList rl = conn.getRovers(gl);
-		rl.print();
+		
+		CsvImporter.insertConstraintLabRS(conn, rl);
+		
 		
 		conn.close();
 		System.out.println("Connection closed");
-		
 		
 		/*
 		RoverList rl = new RoverList(null);
@@ -78,7 +74,7 @@ public class Main {
 	 * @param rl Elenco di rover partecipanti
 	 * @param el Elenco di eventi che devono essere assegnati
 	 */
-	private static void beginningAssignment(RoverList rl, EventList el) {
+	public static void beginningAssignment(RoverList rl, EventList el) {
 		
 		// Cicla sui 3 giorni che devono essere assegnati.
 		for (int workingday = 1; workingday <= 3; workingday++){
