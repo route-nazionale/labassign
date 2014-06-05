@@ -32,17 +32,8 @@ public class EventList implements Iterable<Event>{
 	
 	/**
 	 * Costruttore che inizializza la lista degli eventi da considerare.
-	 * Gli eventi vengono caricati da un file che viene indicato come parametro.
-	 * @param file Path del file da cui devono essere caricati gli eventi
 	 */
-	public EventList(String file){
-		/* Ancora da decidere come importare i dati. */
-		queue = new PriorityQueue<>();
-		
-		/*
-		 * for (Lines in file)
-		 * 		queue.offer(new Event...)
-		 */
+	public EventList(){
 	}
 	
 	/**
