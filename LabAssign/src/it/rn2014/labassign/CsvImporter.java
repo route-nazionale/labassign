@@ -5,6 +5,12 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
+/**
+ * Classe che gestisce l'import dei dati da file CSV a Database MySQL, effettuato i
+ * controlli del caso.
+ * 
+ * @author Nicola Corti
+ */
 public class CsvImporter {
 
 	/**
