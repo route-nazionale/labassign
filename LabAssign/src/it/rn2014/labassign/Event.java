@@ -26,6 +26,9 @@ import java.util.List;
  */
 public class Event implements Comparable<Event> {
 
+	
+	/** Codice dell'evento */
+	private String code;
 	/** Nome dell'evento */
 	private String name;
 	/** Strada di coraggio a cui si riferisce l'evento */
@@ -59,9 +62,10 @@ public class Event implements Comparable<Event> {
 	 * @param minpartecipant Vincolo sul minimo dei paretcipanti
 	 * @param organizer Gruppo organizzatore dell'evento
 	 */
-	public Event(String name, int road, int maxpartecipant, int minpartecipant,
+	public Event(String code, String name, int road, int maxpartecipant, int minpartecipant,
 			Group organizer) {
 		super();
+		this.code = code;
 		this.name = name;
 		this.road = road;
 		this.maxpartecipant = maxpartecipant;
@@ -72,6 +76,15 @@ public class Event implements Comparable<Event> {
 		this.partecipant3 = new ArrayList<>();
 	}
 
+	/**
+	 * Ritorna il codice dell'evento
+	 * 
+	 * @return Il codice testuale dell'evento
+	 */
+	public String getCode() {
+		return code;
+	}
+	
 	/**
 	 * Ritorna la strada di coraggio dell'evento
 	 * 
