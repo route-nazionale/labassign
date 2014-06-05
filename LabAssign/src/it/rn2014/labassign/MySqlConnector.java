@@ -8,6 +8,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.mysql.jdbc.PreparedStatement;
+
 public class MySqlConnector {
 
 	private String JDBC_DRIVER = "com.mysql.jdbc.Driver";  
@@ -47,9 +49,9 @@ public class MySqlConnector {
 			
 			int column = rs.getMetaData().getColumnCount();
 			for(int i = 1; i <= column; i++){
-				//System.out.print(rs.getMetaData().getColumnName(i) + ", ");
+				System.out.print(rs.getMetaData().getColumnName(i) + ", ");
 			}
-			//System.out.println();
+			System.out.println();
 			
 			while(rs.next()){
 				for(int i = 1; i <= column; i++){
@@ -172,8 +174,25 @@ public class MySqlConnector {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
 	
-		
+	public java.sql.PreparedStatement getPrepared(String s){
+		try {
+			return conn.prepareStatement(s);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public void updatePrepared(PreparedStatement s) {
+		try {
+			s.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public int executeCount(String string) {
