@@ -38,6 +38,14 @@ public class CsvImporter {
 	}
 	
 
+	/**
+	 * Funzione che legge dal file "lab-rs.csv" l'elenco dei ragazzi che animano un laboratorio RS
+	 * e li inserisce nel DB come vincolo
+	 * 
+	 * @param conn Connettore MySQL al DB di destinazione
+	 * @param rl Elenco di rover (per verificare se esistono)
+	 * @throws Exception In caso di funzionamento errato di I/O
+	 */
 	public static void insertConstraintLabRS(MySqlConnector conn, RoverList rl) throws Exception {
 	
 		
@@ -47,50 +55,74 @@ public class CsvImporter {
 			while((line = f.readLine()) != null){
 				String[] sep = line.split(";");
 				
+				String tipologia =			sep[0];
+				String nome = 				sep[1];
+				String cognome = 			sep[2];
+				String codicecensimento = 	sep[3];
+				String gruppo = 			sep[4];
+				String templabcode = 		sep[5];
+				String turno =				sep[7];
+				
 				// Escludo i capi dall'inserimento
-				if (sep[0].contains("capo")) continue;
+				if (tipologia.contains("capo")) continue;
 				
 				// Ricerco i ragazzi
 				boolean found = false;
 				for(Rover r: rl)
-					if (Double.parseDouble(sep[3]) == r.getCode()) found = true;
+					if (Double.parseDouble(codicecensimento) == r.getCode()) found = true;
 				
 				if (!found) {
-					System.err.println("ASSENTE: " + sep[3] + " - " + sep[1] + ", " + sep[2] + ", " + sep[4]);
+					System.err.println("ASSENTE: " + codicecensimento + " - " + nome + ", " + cognome + ", " + gruppo);
 					continue;
 				} 
 				
-				// Controllo inconsistenza se e' presente un altro vincolo
-				if (conn.executeCount("SELECT * FROM vincoli WHERE codicecensimento = '" + sep[3] + "'") > 0){		
-					String result = conn.executeString("SELECT turn" + sep[7] + " FROM vincoli 	WHERE codicecensimento = '" + sep[3] + "'");
+				// Controllo inconsistenza se e' presente un altro vincolo (se puo' fa un update)
+				if (conn.executeCount("SELECT * FROM vincoli WHERE codicecensimento = '" + codicecensimento + "'") > 0){		
+					String result = conn.executeString("SELECT turn" + turno + " FROM vincoli 	WHERE codicecensimento = '" + codicecensimento + "'");
 					if (result != null) 
-						System.err.println("PROBLEMA VINCOLI: " + sep[3] + " - " + sep[1] + ", " + sep[2] + ", " + sep[4]);
+						System.err.println("PROBLEMA VINCOLI: " + codicecensimento + " - " + nome + ", " + cognome + ", " + gruppo);
 					else 
-						conn.update("UPDATE vincoli SET turn" + sep[7] + "='TEMP-RS-LAB-?-?-" + sep[5] + "' WHERE codicecensimento = '" + sep[3] + "'");
+						conn.update("UPDATE vincoli SET turn" + turno + "='TEMP-RS-LAB-?-?-" + templabcode + "' WHERE codicecensimento = '" + codicecensimento + "'");
 					
 					continue;
 				}
 				
-				if (sep[7].contains("1"))
-					conn.update("INSERT INTO vincoli (codicecensimento, turn1, turn2, turn3) VALUES ('" + sep[3] + "','TEMP-RS-LAB-?-?-" + sep[5] + "', NULL, NULL)");
-				if (sep[7].contains("2"))
-					conn.update("INSERT INTO vincoli (codicecensimento, turn1, turn2, turn3) VALUES ('" + sep[3] + "', NULL, 'TEMP-RS-LAB-?-?-" + sep[5] + "', NULL)");
-				if (sep[7].contains("3"))
-					conn.update("INSERT INTO vincoli (codicecensimento, turn1, turn2, turn3) VALUES ('" + sep[3] + "', NULL, NULL,'TEMP-RS-LAB-?-?-" + sep[5] + "')");
+				if (turno.contains("1"))
+					conn.update("INSERT INTO vincoli (codicecensimento, turn1, turn2, turn3) VALUES ('" + codicecensimento + "','TEMP-RS-LAB-?-?-" + templabcode + "', NULL, NULL)");
+				if (turno.contains("2"))
+					conn.update("INSERT INTO vincoli (codicecensimento, turn1, turn2, turn3) VALUES ('" + codicecensimento + "', NULL, 'TEMP-RS-LAB-?-?-" + templabcode + "', NULL)");
+				if (turno.contains("3"))
+					conn.update("INSERT INTO vincoli (codicecensimento, turn1, turn2, turn3) VALUES ('" + codicecensimento + "', NULL, NULL,'TEMP-RS-LAB-?-?-" + templabcode + "')");
 			}
 
 			f.close();
 			
 	} 
 	
+	/**
+	 * Funzione che legge dal file "laboratori.csv" l'elenco dei laboratori alla route nazionale
+	 * e li inserisce nel DB
+	 * 
+	 * @param conn Connettore MySQL al DB di destinazione
+	 */
+	@SuppressWarnings("unused")
 	public static void insertLabs(MySqlConnector conn) {
 		try {
 			BufferedReader f = new BufferedReader(new FileReader("laboratori.csv"));
 			String line = f.readLine();
 			
 			while((line = f.readLine()) != null){
-				String[] sep = line.split(";");
-				System.out.println(sep);
+				String[] sep = line.split(";", 14);
+				
+				String codice =				sep[1];
+				String strada = 			sep[3];
+				String titolo = 			sep[4];
+				String gruppo = 			sep[5];
+				String mineta = 			sep[7];
+				String maxeta = 			sep[8];
+				String maxpartecipanti =	sep[12];
+				String handicap = 			sep[13];
+				
 			}
 			f.close();
 			
