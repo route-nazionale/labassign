@@ -8,9 +8,9 @@ public class Lab extends Event {
 	private int minage = 0;
 	private int subcamp;
 	
-	public Lab(String name, int road, int minpartecipant,
+	public Lab(String code, String name, int road, int minpartecipant, int maxpartecipant, 
 			Group organizer, boolean novice, boolean handicap, int maxage, int minage, int subcamp) {
-		super(name, road, Parameters.LABORATORY_MAX_USER, minpartecipant, organizer);
+		super(code, name, road, maxpartecipant, minpartecipant, organizer);
 		
 		this.suitablenovice = novice;
 		this.suitablehandicap = handicap;
