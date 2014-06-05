@@ -28,8 +28,9 @@ public class Main {
 	/**
 	 * Funzione main eseguita dal programma
 	 * @param args Elenco dei parametri
+	 * @throws Exception Eccezione generica generata dall'esecuzione (non gestita).
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 
 		MySqlConnector conn = new MySqlConnector();
 		conn.connect();
@@ -37,7 +38,8 @@ public class Main {
 		List<Group> gl = conn.getGroups();
 		RoverList rl = conn.getRovers(gl);
 		
-		CsvImporter.insertConstraintLabRS(conn, rl);
+		
+		//CsvImporter.insertLabs(conn);
 		
 		
 		conn.close();
