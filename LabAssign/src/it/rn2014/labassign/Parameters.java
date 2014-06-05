@@ -43,7 +43,7 @@ public class Parameters {
 	
 	public static final String DB_HOST = "localhost";
 	public static final String DB_USER = "nicolacorti";
-	public static final String DB_PASS = "taiShk8a";
+	public static final String DB_PASS = "";
 	public static final String DB_NAME = "provvisorio";
 	
 	
