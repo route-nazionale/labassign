@@ -37,8 +37,9 @@ public class Main {
 		
 		List<Group> gl = conn.getGroups();
 		RoverList rl = conn.getRovers(gl);
-		EventList el = new EventList();
+		//EventList el = new EventList();
 		
+		conn.execute("SELECT * FROM laboratori");
 		//CsvImporter.insertLabs(conn);
 		
 		
