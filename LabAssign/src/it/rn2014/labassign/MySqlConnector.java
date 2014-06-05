@@ -8,8 +8,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mysql.jdbc.PreparedStatement;
-
 public class MySqlConnector {
 
 	private String JDBC_DRIVER = "com.mysql.jdbc.Driver";  
@@ -31,14 +29,8 @@ public class MySqlConnector {
 		    conn = DriverManager.getConnection(DB_URL,Parameters.DB_USER,Parameters.DB_PASS);
 		    System.out.println("Connection OK");
 
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
+		} catch (ClassNotFoundException e) { e.printStackTrace();
+		} catch (SQLException e) { e.printStackTrace(); }
 	}
 	
 	public void execute(String p){
@@ -60,10 +52,7 @@ public class MySqlConnector {
 				System.out.print("\n");
 			}
 			
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		} catch (SQLException e) { e.printStackTrace(); }
 		
 	}
 	
@@ -117,10 +106,7 @@ public class MySqlConnector {
 				list.addRover(r);
 			}
 			
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		} catch (SQLException e) { e.printStackTrace(); }
 		return list;
 	}
 	
@@ -129,11 +115,7 @@ public class MySqlConnector {
 		try {
 			stat.close();
 			conn.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
+		} catch (SQLException e) { e.printStackTrace(); }
 	}
 
 	public List<Group> getGroups() {
@@ -158,10 +140,7 @@ public class MySqlConnector {
 				list.add(g);
 			}
 			
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		} catch (SQLException e) { e.printStackTrace(); }
 		return list;
 	}
 
@@ -170,29 +149,21 @@ public class MySqlConnector {
 			stat = conn.createStatement();
 			stat.executeUpdate(string);
 			
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		} catch (SQLException e) { e.printStackTrace(); }
 	}
 	
 	public java.sql.PreparedStatement getPrepared(String s){
 		try {
 			return conn.prepareStatement(s);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (SQLException e) { e.printStackTrace();
 			return null;
 		}
 	}
 	
-	public void updatePrepared(PreparedStatement s) {
+	public void updatePrepared(java.sql.PreparedStatement s) {
 		try {
 			s.executeUpdate();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		} catch (SQLException e) { e.printStackTrace(); }
 	}
 	
 	public int executeCount(String string) {
@@ -201,10 +172,7 @@ public class MySqlConnector {
 			stat = conn.createStatement();
 			ResultSet rs = stat.executeQuery(string);
 			while (rs.next()) size++;			
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		} catch (SQLException e) { e.printStackTrace(); }
 		return size;
 		
 	}
@@ -216,10 +184,7 @@ public class MySqlConnector {
 			rs.next();
 			System.out.println("RETURNING " + rs.getString(1));
 			return rs.getString(1);		
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		} catch (SQLException e) { e.printStackTrace(); }
 		return null;
 	}
 }

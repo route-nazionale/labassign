@@ -37,7 +37,7 @@ public class Main {
 		
 		List<Group> gl = conn.getGroups();
 		RoverList rl = conn.getRovers(gl);
-		
+		EventList el = new EventList();
 		
 		//CsvImporter.insertLabs(conn);
 		
@@ -46,8 +46,6 @@ public class Main {
 		System.out.println("Connection closed");
 		
 		/*
-		RoverList rl = new RoverList(null);
-		EventList el = new EventList(null);
 		
 		beginningAssignment(rl, el);
 		
