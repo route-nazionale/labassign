@@ -18,7 +18,7 @@ package it.rn2014.labassign;
 /**
  * Classe che estende un evento e che rappresenta una tavola rotonda.
  * 
- * @author nicola
+ * @author Nicola Corti
  */
 public class RoundTable extends Event {
 
@@ -26,13 +26,14 @@ public class RoundTable extends Event {
 	 * Costruttore base per una nuova tavola rotonda, che imposta automaticamente il numero
 	 * massimo di partecipanti ad una tavola rotonda.
 	 * 
+	 * @param code Codice della tavola rotonda
 	 * @param name Nome della tavola rotonda
 	 * @param road Strada di coraggio della tavola rotonda
 	 * @param minpartecipant Minimo numero di partecipanti
 	 * @param organizer Gruppo organizzatore della tavola rotonda.
 	 */
-	public RoundTable(String name, int road,
+	public RoundTable(String code, String name, int road,
 			int minpartecipant, Group organizer) {
-		super(name, road, Parameters.ROUNDTABLE_MAX_USER, minpartecipant, organizer);
+		super(code, name, road, Parameters.ROUNDTABLE_MAX_USER, minpartecipant, organizer);
 	}
 }
