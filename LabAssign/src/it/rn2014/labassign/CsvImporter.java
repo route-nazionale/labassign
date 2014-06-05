@@ -1,9 +1,9 @@
 package it.rn2014.labassign;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.sql.SQLException;
 
 /**
  * Classe che gestisce l'import dei dati da file CSV a Database MySQL, effettuato i
@@ -106,40 +106,61 @@ public class CsvImporter {
 	} 
 	
 	/**
-	 * Funzione che legge dal file "laboratori.csv" l'elenco dei laboratori alla route nazionale
+	 * Funzione che legge dal file "laboratori.csv" l'elenco deiconn.updatePrepared(s); laboratori alla route nazionale
 	 * e li inserisce nel DB
 	 * 
 	 * @param conn Connettore MySQL al DB di destinazione
+	 * @throws IOException Problema di lettura del file
 	 */
-	@SuppressWarnings("unused")
-	public static void insertLabs(MySqlConnector conn) {
-		try {
-			BufferedReader f = new BufferedReader(new FileReader("laboratori.csv"));
-			String line = f.readLine();
+	public static void insertLabs(MySqlConnector conn) throws IOException {
+
+		BufferedReader f = new BufferedReader(new FileReader("laboratori.csv"));
+		String line = f.readLine();
+		
+		while((line = f.readLine()) != null){
+			String[] sep = line.split(";", 14);
 			
-			while((line = f.readLine()) != null){
-				String[] sep = line.split(";", 14);
-				
-				String codice =				sep[1];
-				String strada = 			sep[3];
-				String titolo = 			sep[4];
-				String gruppo = 			sep[5];
-				String mineta = 			sep[7];
-				String maxeta = 			sep[8];
-				String maxpartecipanti =	sep[12];
-				String handicap = 			sep[13];
-				
+			String codice =				sep[1];
+			//Integer sottocampo =		0;
+			String strada = 			sep[3];
+			String titolo = 			sep[4];
+			//String gruppo = 			sep[5];
+			String mineta = 			sep[7];
+			String maxeta = 			sep[8];
+			String maxpartecipanti =	sep[12];
+			String handicap = 			sep[13];
+			
+			// Genero il pattern per le strade di coraggio
+			String stradatuple = "0, 0, 0, 0, 0";
+			switch (Integer.parseInt(strada)) {
+			case 1: stradatuple = "1, 0, 0, 0, 0"; break;
+			case 2: stradatuple = "0, 1, 0, 0, 0"; break;
+			case 3: stradatuple = "0, 0, 1, 0, 0"; break;
+			case 4: stradatuple = "0, 0, 0, 1, 0"; break;
+			case 5: stradatuple = "0, 0, 0, 0, 1"; break;
 			}
-			f.close();
 			
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			// Prepared statement per lavorare con stringhe escaped (titoli e codici)
+			java.sql.PreparedStatement s = conn.getPrepared( "INSERT INTO laboratori (codice, nome, sottocampo, maxpartecipanti, minpartecipanti, organizzatore, novizio, handicap, etamassima, etaminima, stradadicoraggio1, stradadicoraggio2, stradadicoraggio3, stradadicoraggio4, stradadicoraggio5 )" +
+					" VALUES (" +
+					"?," +
+					"?," +
+					"0," +
+					"" + (maxpartecipanti.contentEquals("") ? Parameters.LABORATORY_MAX_USER : Integer.parseInt(maxpartecipanti)) + "," +
+					"0," + 
+					"'" + codice.substring(5, 8) + "'," + 
+					"0," +
+					"" + (handicap.contains("x") || handicap.contains("X") ? 1 : 0) + "," + 
+					Integer.parseInt(maxeta) + "," + 
+					Integer.parseInt(mineta) + "," + 
+					stradatuple + ");"); 
+			
+			try {
+				s.setString(1, codice);
+				s.setString(2, titolo);
+				conn.updatePrepared(s);
+			} catch (SQLException e) { e.printStackTrace(); }
 		}
+		f.close();
 	}
-	
-	
 }
