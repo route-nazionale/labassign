@@ -16,6 +16,8 @@
  */
 package it.rn2014.labassign;
 
+import it.rn2014.labassign.Parameters;
+
 /**
  * Classe che rappresenta un rs iscritto alla route nazionale,
  * corredato delle informazioni raccolte in fase di iscrizione e 
@@ -198,23 +200,23 @@ public class Rover implements Comparable<Rover> {
 			// Caso Laboratorio
 			Lab l = (Lab) e;
 			
-			if (priority <= 1 && !l.getRoadMask(this)) return false;
+			if (priority <= Parameters.PRIO_FULL && !l.getRoadMask(this)) return false;
 			
-			if (priority <= 3 && l.getMaxAge() < this.age) return false;
-			if (priority <= 3 && l.getMinAge() > this.age) return false;
+			if (priority <= Parameters.PRIO_AGE && l.getMaxAge() < this.age) return false;
+			if (priority <= Parameters.PRIO_AGE && l.getMinAge() > this.age) return false;
 			
-			if (priority <= 2 && l.getPartecipantsTwinnings(day, this) >= Parameters.LABORATORY_MAX_TWINNING_USER) return false;
+			if (priority <= Parameters.PRIO_TWIN_LAB && l.getPartecipantsTwinnings(day, this) >= Parameters.LABORATORY_MAX_TWINNING_USER) return false;
 			
-			if (priority <= 2 && (l.getSuitableNovice() || l.getMinAge() > 17) == false && this.novice == true) return false;
+			if (priority <= Parameters.PRIO_NOVICE && (l.getSuitableNovice() || l.getMinAge() > 17) == false && this.novice == true) return false;
 			
 			
-			if (priority <= 4 && l.getSuitableHandicap() == false && this.handicap == true) return false;
+			if (priority <= Parameters.PRIO_HANDICAP && l.getSuitableHandicap() == false && this.handicap == true) return false;
 			
-			//if (priority <= 5 && l.getSubcamp() != this.group.getSubcamp()) return false;
+			//if (priority <= Parameters.PRIO_QUART && l.getSubcamp() != this.group.getSubcamp()) return false;
 			
-			if (priority <= 5 && l.isFull(day)) return false;
+			if (priority <= Parameters.PRIO_FULL && l.isFull(day)) return false;
 			
-			if (priority <= 5){
+			if (priority <= Parameters.PRIO_EQUALS){
 				if (day == 2 && l.getCode().contentEquals(this.assign1.getCode())) 
 					return false;
 				if (day == 3 && (l.getCode().contentEquals(this.assign1.getCode()) ||
@@ -227,17 +229,17 @@ public class Rover implements Comparable<Rover> {
 			
 			// Caso Tavola Rotonda
 			RoundTable r = (RoundTable) e;
-			if (priority <= 5 && r.isFull(day)) return false;
-			if (priority <= 2 && r.getPartecipantsTwinnings(day, this) >= Parameters.ROUNDTABLE_MAX_USER) return false;
+			if (priority <= Parameters.PRIO_FULL && r.isFull(day)) return false;
+			if (priority <= Parameters.PRIO_TWIN_TAV && r.getPartecipantsTwinnings(day, this) >= Parameters.ROUNDTABLE_MAX_USER) return false;
 			
-			if (priority <= 5){
+			if (priority <= Parameters.PRIO_EQUALS){
 				if (day == 2 && r.getCode().contentEquals(this.assign1.getCode())) 
 					return false;
 				if (day == 3 && (r.getCode().contentEquals(this.assign1.getCode()) ||
 								 r.getCode().contentEquals(this.assign2.getCode())))
 					return false;
 			}
-			if (priority <= 5 && day == 3 && (this.assign2 instanceof RoundTable) && (this.assign1 instanceof RoundTable)) return false;
+			if (priority <= Parameters.PRIO_ONE_LAB && day == 3 && (this.assign2 instanceof RoundTable) && (this.assign1 instanceof RoundTable)) return false;
 		}
 		
 		return true;
