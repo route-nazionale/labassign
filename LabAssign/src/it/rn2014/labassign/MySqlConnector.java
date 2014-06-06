@@ -40,10 +40,9 @@ public class MySqlConnector {
 	public void connect(){
 		try {
 			Class.forName(JDBC_DRIVER);
-			System.out.println("Connecting to database...");
+			
 		    conn = DriverManager.getConnection(DB_URL,Parameters.DB_USER,Parameters.DB_PASS);
-		    System.out.println("Connection OK");
-
+		    
 		} catch (ClassNotFoundException e) { e.printStackTrace();
 		} catch (SQLException e) { e.printStackTrace(); }
 	}
@@ -101,7 +100,7 @@ public class MySqlConnector {
 				}
 				if (group == null) {
 					
-					System.err.println("GRUPPO " + idgroup + " UNITA " + idunity);
+					System.err.println("GRUPPO ASSENTE! ID: " + idgroup + " UNITA " + idunity);
 					ls.add(idgroup);
 					//throw new RuntimeException("GRUPPO NON PRESENTE NEL DB");
 				}
@@ -174,7 +173,6 @@ public class MySqlConnector {
 		try {
 			stat.close();
 			conn.close();
-			System.out.println("Connection Close");
 		} catch (SQLException e) { e.printStackTrace(); }
 	}
 

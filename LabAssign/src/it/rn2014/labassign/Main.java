@@ -45,15 +45,15 @@ public class Main {
 		
 		System.out.println();
 		System.out.println("--------- PARAMETRI ---------");
-		System.out.println("| PRIO_FULL: \t" + Parameters.PRIO_FULL);
-		System.out.println("| PRIO_ROAD: \t" + Parameters.PRIO_ROAD);
-		System.out.println("| PRIO_AGE: \t" + Parameters.PRIO_AGE);
+		System.out.println("| PRIO_FULL: \t\t" + Parameters.PRIO_FULL);
+		System.out.println("| PRIO_ROAD: \t\t" + Parameters.PRIO_ROAD);
+		System.out.println("| PRIO_AGE: \t\t" + Parameters.PRIO_AGE);
 		System.out.println("| PRIO_TWIN_LAB: \t" + Parameters.PRIO_TWIN_LAB);
 		System.out.println("| PRIO_TWIN_TAV: \t" + Parameters.PRIO_TWIN_TAV);
-		System.out.println("| PRIO_NOVICE: \t" + Parameters.PRIO_NOVICE);
-		System.out.println("| PRIO_QUART: \t" + Parameters.PRIO_QUART);
+		System.out.println("| PRIO_NOVICE: \t\t" + Parameters.PRIO_NOVICE);
+		System.out.println("| PRIO_QUART: \t\t" + Parameters.PRIO_QUART);
 		System.out.println("| PRIO_HANDICAP: \t" + Parameters.PRIO_HANDICAP);
-		System.out.println("| PRIO_EQUALS: \t" + Parameters.PRIO_EQUALS);
+		System.out.println("| PRIO_EQUALS: \t\t" + Parameters.PRIO_EQUALS);
 		System.out.println("| PRIO_ONE_LAB: \t" + Parameters.PRIO_ONE_LAB);
 		System.out.println("-----------------------------");
 		System.out.println("--------- CONNESSIONE DB ---------");
@@ -98,7 +98,7 @@ public class Main {
 		
 		System.out.println("############## FINE! ##############");
 		System.out.println("# SODDISFAZIONE: " + rl.totalSatisfaction());
-		System.out.println("# SU: " + rl.totalSatisfaction());
+		System.out.println("# SU: " + rl.totalMaxSatisfaction());
 		System.out.println("#####");
 		System.out.println("# PERCENTUALE: " + (rl.totalSatisfaction()/rl.totalMaxSatisfaction()));
 		System.out.println("###################################");
@@ -171,7 +171,7 @@ public class Main {
 					el.updateEvent(temp);
 				}
 			}
-			System.out.print("Completato! :-)");
+			System.out.print("Completato! :-)\n");
 		}
 	}
 }

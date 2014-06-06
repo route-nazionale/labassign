@@ -203,12 +203,12 @@ public class Rover implements Comparable<Rover> {
 			if (priority <= Parameters.PRIO_ROAD && !l.getRoadMask(this)) return false;
 			
 			if (priority <= Parameters.PRIO_AGE && l.getMaxAge() < this.age) return false;
+			
 			if (priority <= Parameters.PRIO_AGE && l.getMinAge() > this.age) return false;
 			
 			if (priority <= Parameters.PRIO_TWIN_LAB && l.getPartecipantsTwinnings(day, this) >= Parameters.LABORATORY_MAX_TWINNING_USER) return false;
 			
 			if (priority <= Parameters.PRIO_NOVICE && (l.getSuitableNovice() || l.getMinAge() > 17) == false && this.novice == true) return false;
-			
 			
 			if (priority <= Parameters.PRIO_HANDICAP && l.getSuitableHandicap() == false && this.handicap == true) return false;
 			
