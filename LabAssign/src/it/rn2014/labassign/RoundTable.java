@@ -28,7 +28,6 @@ public class RoundTable extends Event {
 	 * 
 	 * @param code Codice della tavola rotonda
 	 * @param name Nome della tavola rotonda
-	 * @param road Strada di coraggio della tavola rotonda
 	 * @param minpartecipant Minimo numero di partecipanti
 	 * @param organizer Gruppo organizzatore della tavola rotonda.
 	 */

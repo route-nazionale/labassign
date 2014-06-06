@@ -74,7 +74,6 @@ public class Event implements Comparable<Event> {
 	 * Costruttore per generare un nuovo evento fornendo tutti i campi necessari
 	 * 
 	 * @param name Nome dell'evento
-	 * @param road Strada di coraggio
 	 * @param maxpartecipant Vincolo sul massimo dei partecipanti
 	 * @param minpartecipant Vincolo sul minimo dei paretcipanti
 	 * @param organizer Gruppo organizzatore dell'evento

@@ -82,9 +82,9 @@ public class EventList implements Iterable<Event>{
 	}
 
 	/**
-	 * Aggiorna un evento nella coda di priorità
+	 * Aggiorna il working day di tutti gli eventi (Implementazione)
 	 * 
-	 * @param e Evento da aggiornare
+	 * @param newworkingday Il working day da aggiornare
 	 */
 	protected void updateWorkingDay(int newworkingday){
 		Iterator<Event> it = queue.iterator();

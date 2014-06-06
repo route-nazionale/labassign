@@ -73,7 +73,7 @@ public class Rover implements Comparable<Rover> {
 	 * @param age Eta del rover
 	 * @param handicap Portatore di handicap
 	 * @param novice Novizio
-	 * @param b Gruppo di apparteneza
+	 * @param group Gruppo di apparteneza
 	 */
 	public Rover(String name, String surname, double code, int age,
 			boolean handicap, boolean novice, Group group) {
