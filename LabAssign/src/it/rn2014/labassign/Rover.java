@@ -200,7 +200,7 @@ public class Rover implements Comparable<Rover> {
 			// Caso Laboratorio
 			Lab l = (Lab) e;
 			
-			if (priority <= Parameters.PRIO_FULL && !l.getRoadMask(this)) return false;
+			if (priority <= Parameters.PRIO_ROAD && !l.getRoadMask(this)) return false;
 			
 			if (priority <= Parameters.PRIO_AGE && l.getMaxAge() < this.age) return false;
 			if (priority <= Parameters.PRIO_AGE && l.getMinAge() > this.age) return false;
