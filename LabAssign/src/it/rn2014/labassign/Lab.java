@@ -33,9 +33,10 @@ public class Lab extends Event {
 	/** Sottocampo di appartenenza */
 	private int subcamp;
 	
-	public Lab(String code, String name, int road, int minpartecipant, int maxpartecipant, 
+	
+	public Lab(String code, String name, int minpartecipant, int maxpartecipant, 
 			Group organizer, boolean novice, boolean handicap, int maxage, int minage, int subcamp) {
-		super(code, name, road, maxpartecipant, minpartecipant, organizer);
+		super(code, name, maxpartecipant, minpartecipant, organizer);
 		
 		this.suitablenovice = novice;
 		this.suitablehandicap = handicap;

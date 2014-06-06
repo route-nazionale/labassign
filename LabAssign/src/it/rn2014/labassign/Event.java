@@ -24,6 +24,10 @@ import java.util.List;
  * 
  * @author Nicola Corti
  */
+/**
+ * @author nicola
+ *
+ */
 public class Event implements Comparable<Event> {
 
 	
@@ -31,8 +35,6 @@ public class Event implements Comparable<Event> {
 	private String code;
 	/** Nome dell'evento */
 	private String name;
-	/** Strada di coraggio a cui si riferisce l'evento */
-	private int road;
 	
 	/** Numero massimo di partecipanti */
 	private int maxpartecipant;
@@ -49,6 +51,20 @@ public class Event implements Comparable<Event> {
 	/** Elenco dei partecipanti alla terza realizzazione dell'evento */
 	private List<Rover> partecipant3;
 	
+	/** Il laboratorio e' svolto per la 1a strada di coraggio? */
+	private boolean road1;
+	/** Il laboratorio e' svolto per la 2a strada di coraggio? */
+	private boolean road2;
+	/** Il laboratorio e' svolto per la 3a strada di coraggio? */
+	private boolean road3;
+	/** Il laboratorio e' svolto per la 4a strada di coraggio? */
+	private boolean road4;
+	/** Il laboratorio e' svolto per la 5a strada di coraggio? */
+	private boolean road5;
+	
+	/** Rappresentazione numerica della strada di coraggio */
+	private int roadnum;
+	
 	/** IMPLEMENTAZIONE Indica il giorno con cui si sta lavorando, al fine di 
 	 *  realizzare l'ordinamento fra due eventi */
 	private int workingday = 1;
@@ -62,12 +78,11 @@ public class Event implements Comparable<Event> {
 	 * @param minpartecipant Vincolo sul minimo dei paretcipanti
 	 * @param organizer Gruppo organizzatore dell'evento
 	 */
-	public Event(String code, String name, int road, int maxpartecipant, int minpartecipant,
+	public Event(String code, String name, int maxpartecipant, int minpartecipant,
 			Group organizer) {
 		super();
 		this.code = code;
 		this.name = name;
-		this.road = road;
 		this.maxpartecipant = maxpartecipant;
 		this.minpartecipant = minpartecipant;
 		this.organizer = organizer;
@@ -86,13 +101,28 @@ public class Event implements Comparable<Event> {
 	}
 	
 	/**
-	 * Ritorna la strada di coraggio dell'evento
+	 * Aggiorna contemporaneamente i dati su tutte le strade di coraggio
 	 * 
-	 * @return La strada di coraggio dell'evento
+	 * @param r1 Preferenza da assegnare alla prima strada di coraggio
+	 * @param r2 Preferenza da assegnare alla seconda strada di coraggio
+	 * @param r3 Preferenza da assegnare alla terza strada di coraggio
+	 * @param r4 Preferenza da assegnare alla quarta strada di coraggio
+	 * @param r5 Preferenza da assegnare alla quinta strada di coraggio
 	 */
-	public int getRoad() {
-		return road;
+	public void setRoadsPreference(boolean r1, boolean r2, boolean r3, boolean r4, boolean r5){
+		this.road1 = r1;
+		this.road2 = r2;
+		this.road3 = r3;
+		this.road4 = r4;
+		this.road5 = r5;
+		if (r1) roadnum = 1;
+		if (r2) roadnum = 2;
+		if (r3) roadnum = 3;
+		if (r4) roadnum = 4;
+		if (r5) roadnum = 5;
+		
 	}
+	
 	
 	/**
 	 * Controlla se un evento è full per un dato giorno in input
@@ -215,6 +245,29 @@ public class Event implements Comparable<Event> {
 		if (l1.size() < l2.size()) return -1;
 		else if (l1.size() > l2.size()) return 1;
 		else return 0;
+	}
+
+	/**
+	 * Ritorna la strada di coraggio in forma numerica
+	 * 
+	 * @return La strada di coraggio dell'evento.
+	 */
+	public int getRoad() {
+		return roadnum;
+	}
+	
+	/**
+	 * Calcola il risultato fra una maschera di bit di strade di coraggio e la strada di coraggio dell'evento
+	 * 
+	 * @param r1 Bit della prima strada di coraggio
+	 * @param r2 Bit della seconda strada di coraggio
+	 * @param r3 Bit della terza strada di coraggio
+	 * @param r4 Bit della quarta strada di coraggio
+	 * @param r5 Bit della quinta strada di coraggio
+	 * @return True se c'e' un match, false altrimenti
+	 */
+	public boolean getRoadMask(boolean r1, boolean r2, boolean r3, boolean r4, boolean r5){
+		return (r1 && road1)||(r2 && road2)||(r3 && road3)||(r4 && road4)||(r5 && road5);
 	}
 	
 	

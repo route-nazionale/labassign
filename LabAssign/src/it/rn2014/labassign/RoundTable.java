@@ -32,8 +32,8 @@ public class RoundTable extends Event {
 	 * @param minpartecipant Minimo numero di partecipanti
 	 * @param organizer Gruppo organizzatore della tavola rotonda.
 	 */
-	public RoundTable(String code, String name, int road,
+	public RoundTable(String code, String name, 
 			int minpartecipant, Group organizer) {
-		super(code, name, road, Parameters.ROUNDTABLE_MAX_USER, minpartecipant, organizer);
+		super(code, name, Parameters.ROUNDTABLE_MAX_USER, minpartecipant, organizer);
 	}
 }

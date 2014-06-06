@@ -34,6 +34,17 @@ public class EventList implements Iterable<Event>{
 	 * Costruttore che inizializza la lista degli eventi da considerare.
 	 */
 	public EventList(){
+		queue = new PriorityQueue<>();
+	}
+	
+	
+	/**
+	 * Aggiunge un evento nella lista degli eventi da considerare
+	 * 
+	 * @param e Evento da aggiungere
+	 */
+	public void addEvent(Event e){
+		queue.add(e);
 	}
 	
 	/**
