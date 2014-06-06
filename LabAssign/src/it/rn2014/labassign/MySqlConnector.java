@@ -87,7 +87,7 @@ public class MySqlConnector {
 				}
 				if (group == null) {
 					
-					System.err.println("GRUPPO " + idgroup);
+					System.err.println("GRUPPO " + idgroup + " UNITA " + idunity);
 					ls.add(idgroup);
 					//throw new RuntimeException("GRUPPO NON PRESENTE NEL DB");
 				}
@@ -111,6 +111,49 @@ public class MySqlConnector {
 		} catch (SQLException e) { e.printStackTrace(); }
 		return list;
 	}
+	
+	public EventList getLabs(){
+		EventList list = new EventList();
+				
+		try {
+			stat = conn.createStatement();
+			ResultSet rs = stat.executeQuery("SELECT * FROM laboratori");
+			
+			Lab l;
+			while(rs.next()){
+				
+				//int id = rs.getInt("id");
+				String name = rs.getString("nome");
+				String code = rs.getString("codice");
+				//String organizer = rs.getString("organizzatore");
+				int subcamp = rs.getInt("sottocampo");
+				
+				int maxpartecipant = rs.getInt("maxpartecipanti");
+				int minpartecipant = rs.getInt("minpartecipanti");
+				
+				int maxage = rs.getInt("etamassima");
+				int minage = rs.getInt("etaminima");
+				
+				boolean road1 = rs.getBoolean("stradadicoraggio1");
+				boolean road2 = rs.getBoolean("stradadicoraggio2");
+				boolean road3 = rs.getBoolean("stradadicoraggio3");
+				boolean road4 = rs.getBoolean("stradadicoraggio4");
+				boolean road5 = rs.getBoolean("stradadicoraggio5");
+				
+				boolean handicap = rs.getBoolean("handicap");
+				boolean novice = rs.getBoolean("novizio");
+				
+				l = new Lab(code, name, minpartecipant, maxpartecipant, null, novice, handicap, maxage, minage, subcamp);
+				l.setRoadsPreference(road1,road2, road3, road4, road5);
+				
+				list.addEvent(l);
+			}
+			
+		} catch (SQLException e) { e.printStackTrace(); }
+		return list;
+	}
+	
+	
 	
 	
 	public void close(){
