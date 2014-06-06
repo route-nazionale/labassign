@@ -42,6 +42,7 @@ public class Event implements Comparable<Event> {
 	private int minpartecipant;
 	
 	/** Gruppo organizzatore */
+	@SuppressWarnings("unused")
 	private Group organizer;
 	
 	/** Elenco dei partecipanti alla prima realizzazione dell'evento */
@@ -131,6 +132,7 @@ public class Event implements Comparable<Event> {
 	 * @return True se l'evento e full, false altrimenti
 	 */
 	public boolean isFull(int day){
+		
 		switch (day) {
 		case 1: return partecipant1.size() >= maxpartecipant;
 		case 2: return partecipant2.size() >= maxpartecipant;
@@ -187,8 +189,11 @@ public class Event implements Comparable<Event> {
 		case 3: list = partecipant3; break;
 		}
 		
-		for (Rover r2 : list)
-			if (r2.getGroup().getTwinning() == r1.getGroup().getTwinning()) count++;
+		for (Rover r2 : list){
+			if (r2.getGroup() != null && r1.getGroup() != null){
+				if (r2.getGroup().getTwinning() == r1.getGroup().getTwinning()) count++;
+			}
+		}
 		
 		return count;
 	}
@@ -209,7 +214,7 @@ public class Event implements Comparable<Event> {
 	 */
 	@Override
 	public String toString(){
-		return "Event " + name + " Organiz: " + organizer;
+		return "EV: " + name + " COD: " + code + " PART: " + partecipant1.size() + " MAX " + maxpartecipant;
 	}
 
 
@@ -240,8 +245,9 @@ public class Event implements Comparable<Event> {
 			break;
 		}
 		
+		// Condizioni che indicano a quale evento dare priorita'
 		if (this.isStillEmpty(workingday) && !arg0.isStillEmpty(workingday)) return -1;
-		if (!this.isStillEmpty(workingday) && arg0.isStillEmpty(workingday)) return -1;
+		if (!this.isStillEmpty(workingday) && arg0.isStillEmpty(workingday)) return 1;
 		if (l1.size() < l2.size()) return -1;
 		else if (l1.size() > l2.size()) return 1;
 		else return 0;
@@ -268,6 +274,16 @@ public class Event implements Comparable<Event> {
 	 */
 	public boolean getRoadMask(boolean r1, boolean r2, boolean r3, boolean r4, boolean r5){
 		return (r1 && road1)||(r2 && road2)||(r3 && road3)||(r4 && road4)||(r5 && road5);
+	}
+	
+	/**
+	 * Calcola il risultato fra le scelte delle strade di coraggio di un ragazzo e la strada di coraggio dell'evento
+	 * 
+	 * @param r Il rover da confrontare
+	 * @return True se c'e' un match, false altrimenti
+	 */
+	public boolean getRoadMask(Rover r){
+		return ((r.getRoad(1) && road1)||(r.getRoad(2) && road2)||(r.getRoad(3) && road3)||(r.getRoad(4) && road4)||(r.getRoad(5) && road5));
 	}
 	
 	

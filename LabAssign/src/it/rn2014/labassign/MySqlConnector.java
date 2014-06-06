@@ -1,3 +1,18 @@
+/*   This file is part of LabAssign
+ *
+ *   LabAssign is free software: you can redistribute it and/or modify
+ *   it under the terms of the GNU General Public License as published by
+ *   the Free Software Foundation, either version 3 of the License, or
+ *   (at your option) any later version.
+ *
+ *   LabAssign is distributed in the hope that it will be useful,
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *   GNU General Public License for more details.
+ *
+ *   You should have received a copy of the GNU General Public License
+ *   along with LabAssign.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package it.rn2014.labassign;
 
 import java.sql.Connection;
@@ -69,7 +84,6 @@ public class MySqlConnector {
 			Rover r;
 			while(rs.next()){
 				
-				int id = rs.getInt("id");
 				String name = rs.getString("nome");
 				String surname = rs.getString("cognome");
 				double code = rs.getDouble("codicecensimento");
@@ -95,7 +109,7 @@ public class MySqlConnector {
 				boolean novice = rs.getBoolean("novizio");
 				boolean handicap = rs.getBoolean("handicap");
 				
-				r = new Rover(id, name, surname, code, age, handicap, novice, group);
+				r = new Rover(name, surname, code, age, handicap, novice, group);
 				
 				boolean road1 = rs.getBoolean("stradadicoraggio1");
 				boolean road2 = rs.getBoolean("stradadicoraggio2");
@@ -160,6 +174,7 @@ public class MySqlConnector {
 		try {
 			stat.close();
 			conn.close();
+			System.out.println("Connection Close");
 		} catch (SQLException e) { e.printStackTrace(); }
 	}
 

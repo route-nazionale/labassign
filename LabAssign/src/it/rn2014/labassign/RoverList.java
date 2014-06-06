@@ -89,7 +89,7 @@ public class RoverList implements Iterable<Rover> {
 	public double totalSatisfaction(){
 		double sum = 0;
 		for (Rover r: queue)
-			sum += r.getMaxSatisfaction();
+			sum += r.getSatisfaction();
 		return sum;
 	}
 	

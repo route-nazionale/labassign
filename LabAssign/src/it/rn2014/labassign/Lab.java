@@ -34,6 +34,20 @@ public class Lab extends Event {
 	private int subcamp;
 	
 	
+	/** 
+	 * Costruttore base che crea un nuovo Laboratorio
+	 * 
+	 * @param code Codice del laboratorio
+	 * @param name Nome del laboratorio
+	 * @param minpartecipant Minimo numero di partecipanti
+	 * @param maxpartecipant Massimo numero di partecipanti
+	 * @param organizer Gruppo organizzatore dell'evento
+	 * @param novice Adatto a novizi (booleano)
+	 * @param handicap Adatto ad handicap (boolean)
+	 * @param maxage Eta massima
+	 * @param minage Eta minima
+	 * @param subcamp Sottocampo in cui e' posizionato
+	 */
 	public Lab(String code, String name, int minpartecipant, int maxpartecipant, 
 			Group organizer, boolean novice, boolean handicap, int maxage, int minage, int subcamp) {
 		super(code, name, maxpartecipant, minpartecipant, organizer);

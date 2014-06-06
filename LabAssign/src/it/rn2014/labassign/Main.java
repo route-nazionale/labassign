@@ -15,6 +15,7 @@
  */
 package it.rn2014.labassign;
 
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -36,20 +37,31 @@ public class Main {
 		conn.connect();
 		
 		List<Group> gl = conn.getGroups();
+		System.err.println(" --- GRUPPI LETTI --- ");
 		RoverList rl = conn.getRovers(gl);
-		//EventList el = new EventList();
+		System.err.println(" --- ROVER LETTI --- ");
+		EventList el = conn.getLabs();
+		System.err.println(" --- LAB LETTI --- ");
 		
-		conn.execute("SELECT * FROM laboratori");
-		//CsvImporter.insertLabs(conn);
-		
-		
-		conn.close();
-		System.out.println("Connection closed");
-		
-		/*
+		// Generazione casuale delle tavole rotonde
+		for(int i = 1; i <= 33; i++){
+			RoundTable r = new RoundTable("TAV-" + i, "TAVOLA " + i, 0, null);
+			if (i % 5 == 0) r.setRoadsPreference(true, false, false, false, false);
+			if (i % 5 == 1) r.setRoadsPreference(false, true, false, false, false);
+			if (i % 5 == 2) r.setRoadsPreference(false, false, true, false, false);
+			if (i % 5 == 3) r.setRoadsPreference(false, false, false, true, false);
+			if (i % 5 == 4) r.setRoadsPreference(false, false, false, false, true);
+			el.addEvent(r);
+		}
 		
 		beginningAssignment(rl, el);
 		
+		System.err.println("SATISFACTION --- " + rl.totalSatisfaction() + " --- MAX --- " + rl.totalMaxSatisfaction());
+		System.err.println(rl.totalSatisfaction()/rl.totalMaxSatisfaction());
+		
+		conn.close();		
+
+		/*
 		double itercount = 0;
 		double globalsat = rl.totalSatisfaction()/rl.totalMaxSatisfaction();
 		while (itercount < Parameters.MAX_ITERATIONS && globalsat < Parameters.SATISFATION_THRESHOLD){
@@ -75,30 +87,43 @@ public class Main {
 	 * @param rl Elenco di rover partecipanti
 	 * @param el Elenco di eventi che devono essere assegnati
 	 */
+	@SuppressWarnings("unused")
 	public static void beginningAssignment(RoverList rl, EventList el) {
 		
-		// Cicla sui 3 giorni che devono essere assegnati.
+		// Assegnamento iniziale, itero sui 3 giorni
 		for (int workingday = 1; workingday <= 3; workingday++){
 			
-			for (Rover r : rl){
+			el.updateWorkingDay(workingday);
+			
+			// Itero sui rover in archivio
+			for (Rover r : rl){				
 				
-				// Sceglie una strada a caso fra quelle del rover e
-				// prova ad assegnargli un laboratorio
-				Event temp = null;
-				EventIteratorRoad eir = new EventIteratorRoad(el, workingday);
-				while(eir.hasNext()){
-					temp = eir.next();
-					if (r.isSuitable(temp, workingday)) break;
+				boolean find = false;		// Flag per indicare se ho trovato un'associazione
+				int find_prio = -1;			// Valore di priorita' attuale (utile per sistemare)
+				Iterator<Event> it;			// Iteratore su Eventi
+				Event temp = null;			// Evento temporaneo
+				
+				// Itero sui livelli di priorita'
+				for (int prio = 1; (prio <= 6 && !find); prio++){
+					
+					it = el.iterator();
+					
+					// Itero sugli eventi
+					while (it.hasNext() && !find){
+						temp = it.next();
+						if (r.isSuitable(temp, workingday, prio))
+							find = true;
+							find_prio = prio;
+					}
 				}
 				
-				// Controllo se ho trovato una possibile associazione senno' genero un'eccezione.
-				if (temp == null || !eir.hasNext()) throw new RuntimeException("NO ASSOCIATION POSSIBLE");
-				else {
+				if (!find) { 
+					throw new RuntimeException("ASSOCIAZIONE IMPOSSIBILE!!! - Rivedere le priorita' dei vincoli");
+				} else {
 					r.assignToEvent(workingday, temp);
 					el.updateEvent(temp);
 				}
 			}
 		}
 	}
-
 }

@@ -30,6 +30,8 @@ public class EventList implements Iterable<Event>{
 	/** Lista di priorità dei rover */
 	private PriorityQueue<Event> queue;
 	
+	
+	
 	/**
 	 * Costruttore che inizializza la lista degli eventi da considerare.
 	 */
@@ -79,6 +81,17 @@ public class EventList implements Iterable<Event>{
 		queue.offer(e);
 	}
 
+	/**
+	 * Aggiorna un evento nella coda di priorità
+	 * 
+	 * @param e Evento da aggiornare
+	 */
+	protected void updateWorkingDay(int newworkingday){
+		Iterator<Event> it = queue.iterator();
+		while(it.hasNext())
+			it.next().updateWorkingDay(newworkingday);
+	}
+	
 	/**
 	 * Ritorna l'iteratore per iterare sulla collezione di eventi contenuti nel sistema
 	 */

@@ -29,8 +29,6 @@ package it.rn2014.labassign;
  */
 public class Rover implements Comparable<Rover> {
 
-	/** ID unico del rover */
-	private int id;
 	/** Nome del rs */
 	private String name;
 	/** Cognome del rs */
@@ -69,18 +67,16 @@ public class Rover implements Comparable<Rover> {
 	/**
 	 * Costruttore di base per generare un nuovo rs a partira da dati di input
 	 * 
-	 * @param id Id univoco del rs
 	 * @param name Nome del rs
 	 * @param surname Cognome del rs
 	 * @param code Codice censimento
 	 * @param age Eta del rover
 	 * @param handicap Portatore di handicap
 	 * @param novice Novizio
-	 * @param group Gruppo di apparteneza
+	 * @param b Gruppo di apparteneza
 	 */
-	public Rover(int id, String name, String surname, double code, int age,
+	public Rover(String name, String surname, double code, int age,
 			boolean handicap, boolean novice, Group group) {
-		this.id = id;
 		this.name = name;
 		this.surname = surname;
 		this.code = code;
@@ -137,6 +133,16 @@ public class Rover implements Comparable<Rover> {
 		this.road3 = r3;
 		this.road4 = r4;
 		this.road5 = r5;
+		
+		
+		if (!(r1 || r2 || r3 || r4 || r5)){
+			
+			//throw new RuntimeException("PROBLEMA CON LE STRADE DI CORAGGIO: " + this);
+			
+			this.road1 = true;
+			this.road2 = true;
+			this.road3 = true;
+		}
 	}
 	
 	////////////////////////////////////
@@ -174,29 +180,64 @@ public class Rover implements Comparable<Rover> {
 	
 	/**
 	 * Calcola se un evento e' adatto ad un ragazzo o meno, in base ai vincoli imposti dall'analisi.
+	 * I vincoli hanno associato un livello di priorita' che puo' essere variabile.
+	 * 
+	 * Il livello di priorita' viene dato in input cosi' che sia possibile selezionare a
+	 * quale livello di profondita' effettuare il controllo.
 	 * 
 	 * @param e L'evento in questione.
 	 * @param day Il giorno in cui si vuole assegnare l'evento
+	 * @param priority Il livello di priorita' a cui effettuare il controllo
 	 * @return True se l'evento e' adatto, false altrimenti
 	 */
-	public boolean isSuitable(Event e, int day){
+	public boolean isSuitable(Event e, int day, int priority){
 		
-		// Caso Laboratorio
+		
 		if (e instanceof Lab){
 			
+			// Caso Laboratorio
 			Lab l = (Lab) e;
-			if (l.isFull(day)) return false;
-			if (l.getMaxAge() < this.age) return false;
-			if (l.getMinAge() > this.age) return false;
-			if (l.getSuitableHandicap() == false && this.handicap == true) return false;
-			if (l.getSuitableNovice() == false && this.novice == true) return false;
-			if (l.getSubcamp() != this.group.getSubcamp()) return false;
-			if (l.getPartecipantsTwinnings(day, this) >= Parameters.LABORATORY_MAX_TWINNING_USER) return false;
+			
+			if (priority <= 1 && !l.getRoadMask(this)) return false;
+			
+			if (priority <= 3 && l.getMaxAge() < this.age) return false;
+			if (priority <= 3 && l.getMinAge() > this.age) return false;
+			
+			if (priority <= 2 && l.getPartecipantsTwinnings(day, this) >= Parameters.LABORATORY_MAX_TWINNING_USER) return false;
+			
+			if (priority <= 2 && (l.getSuitableNovice() || l.getMinAge() > 17) == false && this.novice == true) return false;
+			
+			
+			if (priority <= 4 && l.getSuitableHandicap() == false && this.handicap == true) return false;
+			
+			//if (priority <= 5 && l.getSubcamp() != this.group.getSubcamp()) return false;
+			
+			if (priority <= 5 && l.isFull(day)) return false;
+			
+			if (priority <= 5){
+				if (day == 2 && l.getCode().contentEquals(this.assign1.getCode())) 
+					return false;
+				if (day == 3 && (l.getCode().contentEquals(this.assign1.getCode()) ||
+								 l.getCode().contentEquals(this.assign2.getCode())))
+					return false;
+			}
+			
 			
 		} else if (e instanceof RoundTable) {
+			
+			// Caso Tavola Rotonda
 			RoundTable r = (RoundTable) e;
-			if (r.isFull(day)) return false;
-			if (r.getPartecipantsTwinnings(day, this) >= Parameters.ROUNDTABLE_MAX_USER) return false;
+			if (priority <= 5 && r.isFull(day)) return false;
+			if (priority <= 2 && r.getPartecipantsTwinnings(day, this) >= Parameters.ROUNDTABLE_MAX_USER) return false;
+			
+			if (priority <= 5){
+				if (day == 2 && r.getCode().contentEquals(this.assign1.getCode())) 
+					return false;
+				if (day == 3 && (r.getCode().contentEquals(this.assign1.getCode()) ||
+								 r.getCode().contentEquals(this.assign2.getCode())))
+					return false;
+			}
+			if (priority <= 5 && day == 3 && (this.assign2 instanceof RoundTable) && (this.assign1 instanceof RoundTable)) return false;
 		}
 		
 		return true;
@@ -260,8 +301,9 @@ public class Rover implements Comparable<Rover> {
 			if (rand < 20 && road1) return 1;
 			if (rand >= 20 && rand < 40 && road2) return 2;
 			if (rand >= 40 && rand < 60 && road3) return 3;
-			if (rand >= 60 && rand < 80 && road3) return 4;
-			if (rand >= 80 && rand <= 100 && road3) return 5;
+			if (rand >= 60 && rand < 80 && road4) return 4;
+			if (rand >= 80 && rand <= 100 && road5) return 5;
+			rand = (int) (Math.random()*100);
 		}
 	}
 	
@@ -271,8 +313,7 @@ public class Rover implements Comparable<Rover> {
 	 */
 	@Override
 	public String toString() {
-		// TODO da completare
-		String result = id + " - " + name + " - " + surname + " - " + code + " - TOCOMPLETE ";
+		String result = "ROVER: " + code + " - " + name + " - " + surname + " - SATISF: " + this.getSatisfaction();
 		return result;
 	}
 
@@ -290,8 +331,4 @@ public class Rover implements Comparable<Rover> {
 		if (sat1 > sat2 ) return 1;
 		return 0;
 	}
-	
-	
-	
-	
 }
