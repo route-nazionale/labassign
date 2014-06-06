@@ -33,16 +33,50 @@ public class Main {
 	 */
 	public static void main(String[] args) throws Exception {
 
+		if (args.length < 1){
+			System.err.println("Lab Assign: Invocazione errata. E' necessario indicare un file di configurazione");
+			System.err.println("\t Usage: java -jar labassign.jar labassign.conf");
+		}
+		Parameters.getParameters(args[0]);
+		
+		System.out.println("-----------------------------------------");
+		System.out.println("| LabAssign per Route Nazionale 2014    |");
+		System.out.println("-----------------------------------------");
+		
+		System.out.println();
+		System.out.println("--------- PARAMETRI ---------");
+		System.out.println("| PRIO_FULL: \t" + Parameters.PRIO_FULL);
+		System.out.println("| PRIO_ROAD: \t" + Parameters.PRIO_ROAD);
+		System.out.println("| PRIO_AGE: \t" + Parameters.PRIO_AGE);
+		System.out.println("| PRIO_TWIN_LAB: \t" + Parameters.PRIO_TWIN_LAB);
+		System.out.println("| PRIO_TWIN_TAV: \t" + Parameters.PRIO_TWIN_TAV);
+		System.out.println("| PRIO_NOVICE: \t" + Parameters.PRIO_NOVICE);
+		System.out.println("| PRIO_QUART: \t" + Parameters.PRIO_QUART);
+		System.out.println("| PRIO_HANDICAP: \t" + Parameters.PRIO_HANDICAP);
+		System.out.println("| PRIO_EQUALS: \t" + Parameters.PRIO_EQUALS);
+		System.out.println("| PRIO_ONE_LAB: \t" + Parameters.PRIO_ONE_LAB);
+		System.out.println("-----------------------------");
+		System.out.println("--------- CONNESSIONE DB ---------");
+		
 		MySqlConnector conn = new MySqlConnector();
+		
+		System.out.print("Connessione al DB...");
 		conn.connect();
+		System.out.print("OK!\n");
 		
+		System.out.print("Recupero i gruppi dal DB...");
 		List<Group> gl = conn.getGroups();
-		System.err.println(" --- GRUPPI LETTI --- ");
-		RoverList rl = conn.getRovers(gl);
-		System.err.println(" --- ROVER LETTI --- ");
-		EventList el = conn.getLabs();
-		System.err.println(" --- LAB LETTI --- ");
+		System.out.print("OK!\n");
 		
+		System.out.print("Recupero i rover dal DB...");
+		RoverList rl = conn.getRovers(gl);
+		System.out.print("OK!\n");
+		
+		System.out.print("Recupero i laboratori to DB...");
+		EventList el = conn.getLabs();
+		System.out.print("OK!\n");
+		
+		System.out.print("### Genero le tavole rotonde...");
 		// Generazione casuale delle tavole rotonde
 		for(int i = 1; i <= 33; i++){
 			RoundTable r = new RoundTable("TAV-" + i, "TAVOLA " + i, 0, null);
@@ -53,13 +87,23 @@ public class Main {
 			if (i % 5 == 4) r.setRoadsPreference(false, false, false, false, true);
 			el.addEvent(r);
 		}
+		System.out.print("OK!\n");
+		
+		System.out.print("Chiudo la connessione al DB...");
+		conn.close();	
+		System.out.print("OK!\n");
+		
 		
 		beginningAssignment(rl, el);
 		
-		System.err.println("SATISFACTION --- " + rl.totalSatisfaction() + " --- MAX --- " + rl.totalMaxSatisfaction());
-		System.err.println(rl.totalSatisfaction()/rl.totalMaxSatisfaction());
+		System.out.println("############## FINE! ##############");
+		System.out.println("# SODDISFAZIONE: " + rl.totalSatisfaction());
+		System.out.println("# SU: " + rl.totalSatisfaction());
+		System.out.println("#####");
+		System.out.println("# PERCENTUALE: " + (rl.totalSatisfaction()/rl.totalMaxSatisfaction()));
+		System.out.println("###################################");
 		
-		conn.close();		
+	
 
 		/*
 		double itercount = 0;
@@ -90,9 +134,12 @@ public class Main {
 	@SuppressWarnings("unused")
 	public static void beginningAssignment(RoverList rl, EventList el) {
 		
+		
+		System.out.println("--------- ASSOCIAZIONI RAGAZZI ---------");
 		// Assegnamento iniziale, itero sui 3 giorni
 		for (int workingday = 1; workingday <= 3; workingday++){
 			
+			System.out.print("$ GIORNO " + workingday + "...");
 			el.updateWorkingDay(workingday);
 			
 			// Itero sui rover in archivio
@@ -104,7 +151,7 @@ public class Main {
 				Event temp = null;			// Evento temporaneo
 				
 				// Itero sui livelli di priorita'
-				for (int prio = 1; (prio <= 6 && !find); prio++){
+				for (int prio = 1; (prio <= Parameters.MAX_PRIO && !find); prio++){
 					
 					it = el.iterator();
 					
@@ -124,6 +171,7 @@ public class Main {
 					el.updateEvent(temp);
 				}
 			}
+			System.out.print("Completato! :-)");
 		}
 	}
 }
