@@ -17,6 +17,7 @@ package it.rn2014.labassign;
 
 /**
  * Classe che rappresenta un gruppo in cui sono censiti una serie di ragazzi
+ * NOTA: Due unita' appartenenti allo stesso gruppo agesci, figurano come due istanze della classe Group
  * 
  * @author Nicola Corti
  */
@@ -28,6 +29,8 @@ public class Group {
 	private String name;
 	/** Codice del gruppo */ 
 	private String code;
+	/** Codice dell'unita' */ 
+	private String unity;
 	/** Codice del sottocampo */
 	private int subcamp;
 	/** Codice del gemellaggio */
@@ -42,11 +45,12 @@ public class Group {
 	 * @param subcamp Codice del sottocampo
 	 * @param twinning Codice del gemellaggio
 	 */
-	public Group(int id, String name, String code, int subcamp, int twinning) {
+	public Group(int id, String name, String code, String unity, int subcamp, int twinning) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.code = code;
+		this.unity = unity;
 		this.subcamp = subcamp;
 		this.twinning = twinning;
 	}
@@ -61,6 +65,15 @@ public class Group {
 	}
 	
 	/**
+	 * Ritorna il codice dell'unita (nel formato lettera + numero) 
+	 * 
+	 * @return Il codice dell'unita' considerata
+	 */
+	public String getUnity(){
+		return this.unity;
+	}
+	
+	/**
 	 * Ritorna il sottocampo a cui è assegnato il gruppo
 	 * @return Il sottocampo a cui è assegnato il gruppo
 	 */
@@ -70,6 +83,18 @@ public class Group {
 	 * @return Il gemellaggio a cui è assegnato il gruppo
 	 */
 	public int getTwinning(){ return twinning; }
+	
+	/**
+	 * Controlla se il gruppo istanza corrisponde alla coppia (codice, unita') data in input.
+	 * 
+	 * @param code Codice del gruppo
+	 * @param unity Codice dell'unita'
+	 * @return True se il gruppo in questione e' lo stesso, false altrimenti.
+	 */
+	public boolean sameGroup(String code, String unity){
+		return (this.code.contentEquals(code) && this.unity.contentEquals(unity));
+	}
+	
 	
 	/** 
 	 * Ritorna una stringa rappresentante il gruppo

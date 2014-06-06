@@ -76,9 +76,11 @@ public class MySqlConnector {
 				int age = rs.getInt("eta");
 				
 				String idgroup = rs.getString("idgruppo");
+				String idunity = rs.getString("idunita");
+				
 				Group group = null;
 				for (Group g: gl){
-					if (g.getCode().contentEquals(idgroup)){
+					if (g.sameGroup(idgroup, idunity)){
 						group = g;
 						break;
 					}
@@ -133,10 +135,10 @@ public class MySqlConnector {
 				String name = rs.getString("nome");
 				int sottocampo = rs.getInt("sottocampo");
 				String idgruppo = rs.getString("idgruppo");
-				//String idunita = rs.getString("idunita");
+				String idunita = rs.getString("idunita");
 				int gemellaggio = rs.getInt("gemellaggio");
 				
-				g = new Group(id, name, idgruppo, sottocampo, gemellaggio);
+				g = new Group(id, name, idgruppo, idunita, sottocampo, gemellaggio);
 				list.add(g);
 			}
 			
