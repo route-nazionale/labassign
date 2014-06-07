@@ -45,9 +45,12 @@
         <jar destfile="labassign.jar">
    		<fileset dir="bin"/>
     	<zipfileset includes="**/*.class" src="lib/mysql-connector-java-5.1.30-bin.jar"/>
+    	
     	<manifest>
       	<attribute name="Main-Class"
             value="it.rn2014.labassign.Main"/>
+      	<attribute name="Class-Path" 
+                    value="./lib/mysql-connector-java-5.1.30-bin.jar"/>
     	</manifest>
   		</jar>
     </target>
