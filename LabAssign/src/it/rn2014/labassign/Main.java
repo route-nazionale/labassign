@@ -15,6 +15,8 @@
  */
 package it.rn2014.labassign;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.util.Iterator;
 import java.util.List;
 
@@ -47,6 +49,8 @@ public class Main {
 		System.out.println("--------- PARAMETRI ---------");
 		System.out.println("| PRIO_FULL: \t\t" + Parameters.PRIO_FULL);
 		System.out.println("| PRIO_ROAD: \t\t" + Parameters.PRIO_ROAD);
+		System.out.println("| PRIO_ROAD_2: \t\t" + Parameters.PRIO_ROAD_2);
+		System.out.println("| PRIO_ROAD_3: \t\t" + Parameters.PRIO_ROAD_3);
 		System.out.println("| PRIO_AGE: \t\t" + Parameters.PRIO_AGE);
 		System.out.println("| PRIO_TWIN_LAB: \t" + Parameters.PRIO_TWIN_LAB);
 		System.out.println("| PRIO_TWIN_TAV: \t" + Parameters.PRIO_TWIN_TAV);
@@ -93,8 +97,35 @@ public class Main {
 		conn.close();	
 		System.out.print("OK!\n");
 		
+		System.out.print("Ripartisco i laboratori nei sottocampi...");
+		conn.setSubcamps(el);
+		System.out.print("OK!\n");
 		
 		beginningAssignment(rl, el);
+		
+		BufferedReader var = new BufferedReader(new InputStreamReader(System.in));
+		System.out.println("Stampo le schede dei Laboratori? [S/n]");
+		String res = var.readLine();
+		if (res.contains("s") || res.contains("S")){
+			for (Event e: el){
+				if (e instanceof RoundTable) continue;
+				e.print();
+			}
+		}
+		System.out.println("Stampo le schede delle Tavole Rotonde? [S/n]");
+		res = var.readLine();
+		if (res.contains("s") || res.contains("S")){
+			for (Event e: el){
+				if (e instanceof Lab) continue;
+				e.print();
+			}
+		}
+		System.out.println("Stampo le associazioni dei ragazzi? [S/n]");
+		res = var.readLine();
+		if (res.contains("s") || res.contains("S")){
+			for (Rover r: rl)
+				r.print();
+		}
 		
 		System.out.println("############## FINE! ##############");
 		System.out.println("# SODDISFAZIONE: " + rl.totalSatisfaction());
@@ -103,7 +134,7 @@ public class Main {
 		System.out.println("# PERCENTUALE: " + (rl.totalSatisfaction()/rl.totalMaxSatisfaction()));
 		System.out.println("###################################");
 		
-	
+		
 
 		/*
 		double itercount = 0;
@@ -131,7 +162,6 @@ public class Main {
 	 * @param rl Elenco di rover partecipanti
 	 * @param el Elenco di eventi che devono essere assegnati
 	 */
-	@SuppressWarnings("unused")
 	public static void beginningAssignment(RoverList rl, EventList el) {
 		
 		
@@ -167,7 +197,7 @@ public class Main {
 				if (!find) { 
 					throw new RuntimeException("ASSOCIAZIONE IMPOSSIBILE!!! - Rivedere le priorita' dei vincoli");
 				} else {
-					r.assignToEvent(workingday, temp);
+					r.assignToEvent(workingday, temp, find_prio);
 					el.updateEvent(temp);
 				}
 			}
