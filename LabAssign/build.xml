@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+	<project basedir="." default="build" name="LabAssign">
+    <property environment="env"/>
+    
+    <property name="ECLIPSE_HOME" value="../../../../../usr/lib/eclipse"/>
+    <property name="debuglevel" value="source,lines,vars"/>
+    <property name="target" value="1.7"/>
+    <property name="source" value="1.7"/>
+    
+    <path id="LabAssign.classpath">
+        <pathelement location="bin"/>
+        <pathelement location="lib/mysql-connector-java-5.1.30-bin.jar"/>
+    </path>
+    
+    <target name="init">
+        <mkdir dir="bin"/>
+        <copy includeemptydirs="false" todir="bin">
+            <fileset dir="src">
+                <exclude name="**/*.launch"/>
+                <exclude name="**/*.java"/>
+            </fileset>
+        </copy>
+    </target>
+    <target name="clean">
+        <delete dir="bin"/>
+    </target>
+    
+    <target depends="init" name="build">
+        <echo message="${ant.project.name}: ${ant.file}"/>
+        <javac debug="true" debuglevel="${debuglevel}" destdir="bin" includeantruntime="false" source="${source}" target="${target}">
+            <src path="src"/>
+            <classpath refid="LabAssign.classpath"/>
+        </javac>
+    </target>
+    
+    <target depends="build" name="Execute">
+        <java classname="it.rn2014.labassign.Main" failonerror="true" fork="yes">
+            <arg line="labassign.conf"/>
+            <classpath refid="LabAssign.classpath"/>
+        </java>
+    </target>
+    
+    <target name="jar" depends="build">
+        <jar destfile="labassign.jar">
+   		<fileset dir="bin"/>
+    	<zipfileset includes="**/*.class" src="mysql-connector-java-5.1.30-bin.jar"/>
+    	<manifest>
+      	<attribute name="Main-Class"
+            value="it.rn2014.labassign.Main"/>
+    	</manifest>
+  		</jar>
+    </target>
+    <target name="javadoc">
+        <javadoc destdir="doc/"
+           packagenames="it.rn2014.labassign*"
+           sourcepath="src"
+           excludepackagenames="com.mysql.jdbc.*"
+           defaultexcludes="yes"
+           author="true"
+           version="true"
+           use="true">
+           <classpath refid="LabAssign.classpath"/>
+        </javadoc>
+    </target>
+</project>
