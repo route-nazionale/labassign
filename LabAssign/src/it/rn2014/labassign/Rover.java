@@ -65,10 +65,13 @@ public class Rover implements Comparable<Rover> {
 	/** Terzo evento assegnato */
 	private Event assign3 = null;
 	/** Indica se deve essere assegnato il 1' evento */
+	@SuppressWarnings("unused")
 	private boolean to_assign1 = true;
 	/** Indica se deve essere assegnato il 2' evento */
+	@SuppressWarnings("unused")
 	private boolean to_assign2 = true;
 	/** Indica se deve essere assegnato il 3' evento */
+	@SuppressWarnings("unused")
 	private boolean to_assign3 = true;
 	/** Priorita' Primo evento assegnato */
 	private int pro_1 = 0;
