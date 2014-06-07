@@ -63,6 +63,10 @@ public class Parameters {
 	public static int PRIO_FULL = 5;
 	/** Priorita' vincolo evento che soddisfa scelta strade */
 	public static int PRIO_ROAD = 1;
+	/** Priorita' vincolo evento che soddisfa scelta strade (almeno due strade distinte)*/
+	public static int PRIO_ROAD_2 = 0;
+	/** Priorita' vincolo evento che soddisfa scelta strade (tutte le strade distinte)*/
+	public static int PRIO_ROAD_3 = 0;
 	/** Priorita' vincolo eta prevista per laboratorio */
 	public static int PRIO_AGE = 3;
 	/** Priorita' vincolo numero persone gemellaggio in un laboratorio */
@@ -103,6 +107,8 @@ public class Parameters {
 			
 			if ((PRIO_FULL = Integer.parseInt(prop.getProperty("PRIO_FULL"))) > max) max = PRIO_FULL;
 			if ((PRIO_ROAD = Integer.parseInt(prop.getProperty("PRIO_ROAD"))) > max) max = PRIO_ROAD;
+			if ((PRIO_ROAD_2 = Integer.parseInt(prop.getProperty("PRIO_ROAD_2"))) > max) max = PRIO_ROAD_2;
+			if ((PRIO_ROAD_3 = Integer.parseInt(prop.getProperty("PRIO_ROAD_3"))) > max) max = PRIO_ROAD_3;
 			if ((PRIO_AGE = Integer.parseInt(prop.getProperty("PRIO_AGE"))) > max) max = PRIO_AGE;
 			if ((PRIO_TWIN_LAB = Integer.parseInt(prop.getProperty("PRIO_TWIN_LAB"))) > max) max = PRIO_TWIN_LAB;
 			if ((PRIO_TWIN_TAV = Integer.parseInt(prop.getProperty("PRIO_TWIN_TAV"))) > max) max = PRIO_TWIN_TAV;
