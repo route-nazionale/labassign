@@ -64,7 +64,18 @@ public class Rover implements Comparable<Rover> {
 	private Event assign2 = null;
 	/** Terzo evento assegnato */
 	private Event assign3 = null;
-	
+	/** Indica se deve essere assegnato il 1' evento */
+	private boolean to_assign1 = true;
+	/** Indica se deve essere assegnato il 2' evento */
+	private boolean to_assign2 = true;
+	/** Indica se deve essere assegnato il 3' evento */
+	private boolean to_assign3 = true;
+	/** Priorita' Primo evento assegnato */
+	private int pro_1 = 0;
+	/** Priorita' Secondo evento assegnato */
+	private int pro_2 = 0;
+	/** Priorita' Terzo evento assegnato */
+	private int pro_3 = 0;	
 	
 	/**
 	 * Costruttore di base per generare un nuovo rs a partira da dati di input
@@ -147,6 +158,19 @@ public class Rover implements Comparable<Rover> {
 		}
 	}
 	
+	/**
+	 * Permette di impostare i flag che non fanno assegnare un ragazzo se gia' vincolato
+	 * 
+	 * @param b1 Vincolo sulla prima scelta
+	 * @param b2 Vincolo sulla seconda scelta
+	 * @param b3 Vincolo sulla terza scelta
+	 */
+	public void setNoAssign(boolean b1, boolean b2, boolean b3){
+		this.to_assign1 = b1;
+		this.to_assign1 = b2;
+		this.to_assign1 = b3;
+	}
+	
 	////////////////////////////////////
 	// SODDISFAZIONE
 	//
@@ -202,6 +226,23 @@ public class Rover implements Comparable<Rover> {
 			
 			if (priority <= Parameters.PRIO_ROAD && !l.getRoadMask(this)) return false;
 			
+			if (priority <= Parameters.PRIO_ROAD_2){
+				if (day == 2 && !l.getRoadMask(this)) return false;
+				if (day == 2 && !this.assign1.getRoadMask(this)) return false;
+				if (day == 3 && !l.getRoadMask(this)) return false;
+				if (day == 3 && !this.assign2.getRoadMask(this)) return false;
+				if (day == 3 && (this.assign1.getRoad() == this.assign2.getRoad()) && (this.assign1.getRoad() == l.getRoad())) return false;
+			}
+			
+			if (priority <= Parameters.PRIO_ROAD_3 && day == 3){
+				if (!this.assign1.getRoadMask(this)) return false;
+				if (!this.assign2.getRoadMask(this)) return false;
+				if (!l.getRoadMask(this)) return false;
+				if (l.getRoad() == this.assign1.getRoad()) return false;
+				if (l.getRoad() == this.assign2.getRoad()) return false;
+				if (this.assign1.getRoad() == this.assign2.getRoad()) return false;
+			}
+			
 			if (priority <= Parameters.PRIO_AGE && l.getMaxAge() < this.age) return false;
 			
 			if (priority <= Parameters.PRIO_AGE && l.getMinAge() > this.age) return false;
@@ -212,7 +253,7 @@ public class Rover implements Comparable<Rover> {
 			
 			if (priority <= Parameters.PRIO_HANDICAP && l.getSuitableHandicap() == false && this.handicap == true) return false;
 			
-			//if (priority <= Parameters.PRIO_QUART && l.getSubcamp() != this.group.getSubcamp()) return false;
+			if (priority <= Parameters.PRIO_QUART && this.group != null && l.getSubcamp() != this.group.getSubcamp()) return false;
 			
 			if (priority <= Parameters.PRIO_FULL && l.isFull(day)) return false;
 			
@@ -250,17 +291,21 @@ public class Rover implements Comparable<Rover> {
 	 * 
 	 * @param day Giorno in cui si vuole assegnare l'evento
 	 * @param evt Evento da assegnare
+	 * @param prio La priorita' con cui e' stato effettuato l'assegnamento
 	 */
-	public void assignToEvent(int day, Event evt){
+	public void assignToEvent(int day, Event evt, int prio){
 		switch (day) {
 		case 1:
 			assign1 = evt;
+			this.pro_1 = prio;
 			break;
 		case 2:
 			assign2 = evt;
+			this.pro_2 = prio;
 			break;
 		case 3:
 			assign3 = evt;
+			this.pro_3 = prio;
 			break;
 		default:
 			break;
@@ -315,8 +360,13 @@ public class Rover implements Comparable<Rover> {
 	 */
 	@Override
 	public String toString() {
-		String result = "ROVER: " + code + " - " + name + " - " + surname + " - SATISF: " + this.getSatisfaction();
+		String result = code + "\t " + name + ", " + surname + " GRUPPO: " + this.group +" - SATISF: " + this.getSatisfaction();
 		return result;
+	}
+	
+	public void print(){
+		System.out.println(code + "\t " + name + ", " + surname + " GRUPPO: " + this.group +" - SATISF: " + this.getSatisfaction());
+		System.out.println("1)" + this.assign1.getCode() + " PRIO: " + this.pro_1 + " 2)" + this.assign2.getCode() + " PRIO: " + this.pro_2 + " 3)" + this.assign1.getCode() + " PRIO: " + this.pro_3); 
 	}
 
 	/**

@@ -284,6 +284,31 @@ public class Event implements Comparable<Event> {
 	public boolean getRoadMask(Rover r){
 		return ((r.getRoad(1) && road1)||(r.getRoad(2) && road2)||(r.getRoad(3) && road3)||(r.getRoad(4) && road4)||(r.getRoad(5) && road5));
 	}
+
+	public void print() {
+		System.out.println("~~~~~~~~~~~~ SCHEDA EVENTO ~~~~~~~~~~~");
+		System.out.println("~ Code: " + this.code);
+		System.out.println("~ Nome: " + this.name);
+		System.out.println("~ Strada: " + this.roadnum);
+		System.out.println("~~~ TURNO 1 ~~~");
+		int i = 0;
+		for (Rover r: this.partecipant1){
+			System.out.println("~" + i + ") " + r);
+			i++;
+		}
+		System.out.println("~~~ TURNO 2 ~~~");
+		i = 0;
+		for (Rover r: this.partecipant2){
+			System.out.println("~" + i + ") " + r);
+			i++;
+		}
+		System.out.println("~~~ TURNO 3 ~~~");
+		i = 0;
+		for (Rover r: this.partecipant1){
+			System.out.println("~" + i + ") " + r);
+			i++;
+		}
+	}
 	
 	
 }

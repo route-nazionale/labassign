@@ -95,5 +95,19 @@ public class Lab extends Event {
 	 */
 	public int getSubcamp(){ return subcamp; }
 
-	
+	/**
+	 * Imposta il sottocampo di appartenenza di un evento
+	 * 
+	 * @param camp Il sottocampo in cui deve essere svolto un evento
+	 */
+	public void setSubcamp(int camp) {
+		this.subcamp = camp;
+	}
+
+	@Override
+	public void print(){
+		super.print();
+		System.out.println("~~~ SOTTOCAMPO: " + this.subcamp);
+		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+	}
 }
