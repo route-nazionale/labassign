@@ -72,7 +72,7 @@ public class MySqlConnector {
 	
 	public RoverList getRovers(List<Group> gl){
 		RoverList list = new RoverList();
-		List<String> ls = new ArrayList<>();
+		
 		
 		try {
 			stat = conn.createStatement();
@@ -100,8 +100,7 @@ public class MySqlConnector {
 				}
 				if (group == null) {
 					
-					System.err.println("GRUPPO ASSENTE! ID: " + idgroup + " UNITA " + idunity);
-					ls.add(idgroup);
+					System.err.println("\nGRUPPO ASSENTE NEL DB! ID: " + idgroup + " UNITA " + idunity);
 					//throw new RuntimeException("GRUPPO NON PRESENTE NEL DB");
 				}
 				
@@ -166,7 +165,56 @@ public class MySqlConnector {
 		return list;
 	}
 	
-	
+	public void setSubcamps(EventList el){
+		
+		// Associazione degli eventi ai sottocampi
+		for (int road = 1; road <= 5; road++){
+			
+			int count = 0;
+			int count_subcamp1 = 0;
+			int count_subcamp2 = 0;
+			int count_subcamp3 = 0;
+			int count_subcamp4 = 0;
+			int count_subcamp5 = 0;
+			Lab l;
+			
+			for (Event e: el){
+				
+				if(e instanceof Lab) { l = (Lab) e;	} else continue;
+				
+				if (l.getRoad() == road) count++;
+				if (l.getRoad() == road && l.getSubcamp() != 0) {
+					if (l.getSubcamp() == 1) count_subcamp1++;
+					if (l.getSubcamp() == 2) count_subcamp2++;
+					if (l.getSubcamp() == 3) count_subcamp3++;
+					if (l.getSubcamp() == 4) count_subcamp4++;
+					if (l.getSubcamp() == 5) count_subcamp5++;
+				}
+			}
+			
+			int limit = (count / 5)+1;
+			
+			int current_camp = 1;
+			for (Event e: el){
+				if(e instanceof Lab) { l = (Lab) e;	} else continue;
+				
+				if (l.getRoad() == road && l.getSubcamp() == 0) {
+					if(current_camp == 1 && count_subcamp1 < limit) {l.setSubcamp(current_camp); count_subcamp1++;}
+					if(current_camp == 2 && count_subcamp2 < limit) {l.setSubcamp(current_camp); count_subcamp2++;}
+					if(current_camp == 3 && count_subcamp3 < limit) {l.setSubcamp(current_camp); count_subcamp3++;}
+					if(current_camp == 4 && count_subcamp4 < limit) {l.setSubcamp(current_camp); count_subcamp4++;}
+					if(current_camp == 5 && count_subcamp5 < limit) {l.setSubcamp(current_camp); count_subcamp5++;}
+				}
+				
+				int min = count;
+				if (count_subcamp1 < min) {min = count_subcamp1; current_camp = 1;}
+				if (count_subcamp2 < min) {min = count_subcamp2; current_camp = 2;}
+				if (count_subcamp3 < min) {min = count_subcamp3; current_camp = 3;}
+				if (count_subcamp4 < min) {min = count_subcamp4; current_camp = 4;}
+				if (count_subcamp5 < min) {min = count_subcamp5; current_camp = 5;}
+			}
+		}
+	}
 	
 	
 	public void close(){
