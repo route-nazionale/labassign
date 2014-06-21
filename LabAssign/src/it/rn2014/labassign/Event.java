@@ -42,7 +42,6 @@ public class Event implements Comparable<Event> {
 	private int minpartecipant;
 	
 	/** Gruppo organizzatore */
-	@SuppressWarnings("unused")
 	private Group organizer;
 	
 	/** Elenco dei partecipanti alla prima realizzazione dell'evento */
@@ -285,6 +284,10 @@ public class Event implements Comparable<Event> {
 		return ((r.getRoad(1) && road1)||(r.getRoad(2) && road2)||(r.getRoad(3) && road3)||(r.getRoad(4) && road4)||(r.getRoad(5) && road5));
 	}
 
+	/**
+	 * Stampa la scheda evento associata.
+	 * Mostrando l'elenco dei partecipanti nei 3 turni.
+	 */
 	public void print() {
 		System.out.println("~~~~~~~~~~~~ SCHEDA EVENTO ~~~~~~~~~~~");
 		System.out.println("~ Code: " + this.code);
@@ -310,5 +313,22 @@ public class Event implements Comparable<Event> {
 		}
 	}
 	
+	/**
+	 * Ritorna il gruppo organizzatore dell'evento
+	 * 
+	 * @return Riferimento al gruppo (Istanza di Group) che effettuera' l'evento
+	 */
+	public Group getOrganizer() {
+		return organizer;
+	}
+
+	/**
+	 * Imposta il gruppo che organizzera' l'evento (se presente)
+	 * 
+	 * @param organizer Riferimento al gruppo (Istanza di Group) che effettuera' l'evento
+	 */
+	public void setOrganizer(Group organizer) {
+		this.organizer = organizer;
+	}
 	
 }
