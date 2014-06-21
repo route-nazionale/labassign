@@ -76,22 +76,25 @@ public class Main {
 		RoverList rl = conn.getRovers(gl);
 		System.out.print("OK!\n");
 		
-		System.out.print("Recupero i laboratori to DB...");
+		System.out.print("Recupero i laboratori dal DB...");
 		EventList el = conn.getLabs(gl);
 		System.out.print("OK!\n");
 		
-		System.out.print("### Genero le tavole rotonde...");
-		// Generazione casuale delle tavole rotonde
-		for(int i = 1; i <= 33; i++){
-			RoundTable r = new RoundTable("TAV-" + i, "TAVOLA " + i, 0, null);
-			if (i % 5 == 0) r.setRoadsPreference(true, false, false, false, false);
-			if (i % 5 == 1) r.setRoadsPreference(false, true, false, false, false);
-			if (i % 5 == 2) r.setRoadsPreference(false, false, true, false, false);
-			if (i % 5 == 3) r.setRoadsPreference(false, false, false, true, false);
-			if (i % 5 == 4) r.setRoadsPreference(false, false, false, false, true);
-			el.addEvent(r);
-		}
+		System.out.print("Recupero le tavole rotonde dal DB...");
+		el.addEvents(conn.getRoundTable(gl));
 		System.out.print("OK!\n");
+		
+		// Generazione casuale delle tavole rotonde
+//		for(int i = 1; i <= 33; i++){
+//			RoundTable r = new RoundTable("TAV-" + i, "TAVOLA " + i, 0, null);
+//			if (i % 5 == 0) r.setRoadsPreference(true, false, false, false, false);
+//			if (i % 5 == 1) r.setRoadsPreference(false, true, false, false, false);
+//			if (i % 5 == 2) r.setRoadsPreference(false, false, true, false, false);
+//			if (i % 5 == 3) r.setRoadsPreference(false, false, false, true, false);
+//			if (i % 5 == 4) r.setRoadsPreference(false, false, false, false, true);
+//			el.addEvent(r);
+//		}
+		
 		
 		System.out.print("Chiudo la connessione al DB...");
 		conn.close();	
@@ -188,6 +191,7 @@ public class Main {
 					// Itero sugli eventi
 					while (it.hasNext() && !find){
 						temp = it.next();
+						if (!temp.isEnabled()) continue;
 						if (r.isSuitable(temp, workingday, prio))
 							find = true;
 							find_prio = prio;
