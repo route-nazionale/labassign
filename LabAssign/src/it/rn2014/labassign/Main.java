@@ -77,7 +77,7 @@ public class Main {
 		System.out.print("OK!\n");
 		
 		System.out.print("Recupero i laboratori to DB...");
-		EventList el = conn.getLabs();
+		EventList el = conn.getLabs(gl);
 		System.out.print("OK!\n");
 		
 		System.out.print("### Genero le tavole rotonde...");

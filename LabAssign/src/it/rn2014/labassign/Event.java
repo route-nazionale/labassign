@@ -68,6 +68,8 @@ public class Event implements Comparable<Event> {
 	/** IMPLEMENTAZIONE Indica il giorno con cui si sta lavorando, al fine di 
 	 *  realizzare l'ordinamento fra due eventi */
 	private int workingday = 1;
+	/** IMPLEMENTAZIONE Indica se un evento deve essere considerato ai fini dell'assegnamento oppure no */
+	private boolean enabled = false;
 	
 	/**
 	 * Costruttore per generare un nuovo evento fornendo tutti i campi necessari
@@ -205,6 +207,15 @@ public class Event implements Comparable<Event> {
 	protected void updateWorkingDay(int day) {
 		workingday = day;
 	}
+	/**
+	 * Ritorna il working day.
+	 * Solamente a scopo IMPLEMENTATIVO.
+	 * 
+	 * @return Il working day
+	 */
+	protected int getWorkingDay() {
+		return workingday;
+	}
 	
 	/**
 	 * Ritorna la stringa che rappresenta l'evento
@@ -330,5 +341,20 @@ public class Event implements Comparable<Event> {
 	public void setOrganizer(Group organizer) {
 		this.organizer = organizer;
 	}
+
 	
+	/**
+	 * Permette di abilitare o disabilitare un evento per l'assegnamento
+	 * 
+	 * @param t True se l'evento deve essere abilitato, false altrimenti
+	 */
+	protected void setEnabled(boolean t){ this.enabled = t; }
+	/**
+	 * Ritorna true se l'evento e' abilitato ad essere assegnato oppure deve essere scartato.
+	 * IMPLEMENTAZIONE: invocazioni differenti del metodo possono dare risultati differenti in funzione
+	 * del Working day
+	 * 
+	 * @return True se l'evento e' abilitato, false altrimenti
+	 */
+	protected boolean isEnabled(){ return this.enabled; }
 }

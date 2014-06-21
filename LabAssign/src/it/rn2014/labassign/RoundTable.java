@@ -35,4 +35,32 @@ public class RoundTable extends Event {
 			int minpartecipant, Group organizer) {
 		super(code, name, Parameters.ROUNDTABLE_MAX_USER, minpartecipant, organizer);
 	}
+	
+	/**
+	 * Costruttore base per una nuova tavola rotonda, che permette di impostare il numero
+	 * massimo di partecipanti ad una tavola rotonda.
+	 * 
+	 * @param code Codice della tavola rotonda
+	 * @param name Nome della tavola rotonda
+	 * @param minpartecipant Minimo numero di partecipanti
+	 * @param maxpartecipant Massimo numero di partecipanti
+	 * @param organizer Gruppo organizzatore della tavola rotonda.
+	 */
+	public RoundTable(String code, String name, 
+			int maxpartecipant, int minpartecipant, Group organizer) {
+		super(code, name, maxpartecipant, minpartecipant, organizer);
+	}
+	
+	private int turn = 0;
+	
+	public void setTurn(int t){
+		this.turn = t;
+		this.setEnabled((this.getWorkingDay() == turn) ? true : false);
+	}
+
+	@Override
+	protected void updateWorkingDay(int day) {
+		super.updateWorkingDay(day);
+		this.setEnabled((day == turn) ? true : false); 
+	}
 }

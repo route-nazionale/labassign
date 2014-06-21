@@ -22,7 +22,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 public class MySqlConnector {
 
@@ -125,7 +124,62 @@ public class MySqlConnector {
 		return list;
 	}
 	
-	public EventList getLabs(){
+
+	public EventList getRoundTable(List<Group> gl){
+		EventList roundTables = new EventList();
+		
+		try {
+			stat = conn.createStatement();
+			ResultSet rs = stat.executeQuery("SELECT * FROM tavolerotonde");
+			while(rs.next()){
+
+				String name = rs.getString("nome");
+				String code = rs.getString("codice");
+				
+				//int subcamp = rs.getInt("sottocampo");
+				String organizer = rs.getString("organizzatore");
+				Group group = null;
+				
+				// Vado a prendere il gruppo se e' un evento RS
+				if(organizer.contains("RS")){
+					String idgruppo = rs.getString("idgruppo");
+					String idunita = rs.getString("idunita");
+					for (Group g: gl){
+						if (g.sameGroup(idgruppo, idunita)){
+							group = g;
+							break;
+						}
+					}
+					if (group == null) System.err.println("\nGRUPPO ASSENTE NEL DB! ID: " + idgruppo + " UNITA " + idunita);
+				}	
+			
+				int maxpartecipant = rs.getInt("maxpartecipanti");
+				int minpartecipant = rs.getInt("minpartecipanti");
+				
+				boolean road1 = rs.getBoolean("stradadicoraggio1");
+				boolean road2 = rs.getBoolean("stradadicoraggio2");
+				boolean road3 = rs.getBoolean("stradadicoraggio3");
+				boolean road4 = rs.getBoolean("stradadicoraggio4");
+				boolean road5 = rs.getBoolean("stradadicoraggio5");
+				
+				RoundTable roundTable = new RoundTable(code, name, maxpartecipant, minpartecipant, group);
+				roundTable.setRoadsPreference(road1, road2, road3, road4, road5);
+				
+				int day = 1;
+				boolean turno1 = rs.getBoolean("turno1");
+				if(turno1) day = 1;
+				boolean turno2 = rs.getBoolean("turno2");
+				if(turno2) day = 2;
+				boolean turno3 = rs.getBoolean("turno3");
+				if(turno3) day = 3;
+				roundTable.setTurn(day);
+			}
+		} catch (SQLException e) { e.printStackTrace(); }
+		
+		return roundTables;
+	}
+
+	public EventList getLabs(List<Group> gl){
 		EventList list = new EventList();
 				
 		try {
@@ -135,11 +189,25 @@ public class MySqlConnector {
 			Lab l;
 			while(rs.next()){
 				
-				//int id = rs.getInt("id");
 				String name = rs.getString("nome");
 				String code = rs.getString("codice");
-				//String organizer = rs.getString("organizzatore");
+
 				int subcamp = rs.getInt("sottocampo");
+				String organizer = rs.getString("organizzatore");
+				Group group = null;
+				
+				// Vado a prendere il gruppo se e' un evento RS
+				if(organizer.contains("RS")){
+					String idgruppo = rs.getString("idgruppo");
+					String idunita = rs.getString("idunita");
+					for (Group g: gl){
+						if (g.sameGroup(idgruppo, idunita)){
+							group = g;
+							break;
+						}
+					}
+					if (group == null) System.err.println("\nGRUPPO ASSENTE NEL DB! ID: " + idgruppo + " UNITA " + idunita);
+				}			
 				
 				int maxpartecipant = rs.getInt("maxpartecipanti");
 				int minpartecipant = rs.getInt("minpartecipanti");
@@ -156,7 +224,7 @@ public class MySqlConnector {
 				boolean handicap = rs.getBoolean("handicap");
 				boolean novice = rs.getBoolean("novizio");
 				
-				l = new Lab(code, name, minpartecipant, maxpartecipant, null, novice, handicap, maxage, minage, subcamp);
+				l = new Lab(code, name, minpartecipant, maxpartecipant, group, novice, handicap, maxage, minage, subcamp);
 				l.setRoadsPreference(road1,road2, road3, road4, road5);
 				
 				list.addEvent(l);
