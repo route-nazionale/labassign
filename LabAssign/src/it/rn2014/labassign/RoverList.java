@@ -57,6 +57,28 @@ public class RoverList implements Iterable<Rover> {
 	}
 	
 	/**
+	 * Ritorna il rover dato il codice censimento in input
+	 * 
+	 * @return Il rover richiesto, null se il rover non viene trovato
+	 */
+	public Rover getRover(String codice){
+		for (Rover r: queue)
+			if (r.getCode() == Double.parseDouble(codice)) return r;
+		return null;
+	}
+	
+	/**
+	 * Ritorna il rover dato il codice censimento in input
+	 * 
+	 * @return Il rover richiesto, null se il rover non viene trovato
+	 */
+	public Rover getRover(double codice){
+		for (Rover r: queue)
+			if (r.getCode() == codice) return r;
+		return null;
+	}
+	
+	/**
 	 * Ritorna il rover meno soddisfatto, e che ha indicato la strada di coraggio indicata come
 	 * parametro.
 	 * 

@@ -65,20 +65,17 @@ public class Rover implements Comparable<Rover> {
 	/** Terzo evento assegnato */
 	private Event assign3 = null;
 	/** Indica se deve essere assegnato il 1' evento */
-	@SuppressWarnings("unused")
 	private boolean to_assign1 = true;
 	/** Indica se deve essere assegnato il 2' evento */
-	@SuppressWarnings("unused")
 	private boolean to_assign2 = true;
 	/** Indica se deve essere assegnato il 3' evento */
-	@SuppressWarnings("unused")
 	private boolean to_assign3 = true;
 	/** Priorita' Primo evento assegnato */
-	private int pro_1 = 0;
+	private int prio_1 = 0;
 	/** Priorita' Secondo evento assegnato */
-	private int pro_2 = 0;
+	private int prio_2 = 0;
 	/** Priorita' Terzo evento assegnato */
-	private int pro_3 = 0;	
+	private int prio_3 = 0;	
 	
 	/**
 	 * Costruttore di base per generare un nuovo rs a partira da dati di input
@@ -116,6 +113,14 @@ public class Rover implements Comparable<Rover> {
 	 */
 	public double getCode(){ return code; }
 	
+	/**
+	 * Ritorna true se il rover e' un novizio
+	 * 
+	 * @return True se il rover e' un novizio
+	 */
+	public boolean isNovice(){ return novice; }
+	
+
 	
 	/**
 	 * Ritorna la preferenza indicata relativa ad una delle 5 strade di coraggio
@@ -252,7 +257,10 @@ public class Rover implements Comparable<Rover> {
 			
 			if (priority <= Parameters.PRIO_TWIN_LAB && l.getPartecipantsTwinnings(day, this) >= Parameters.LABORATORY_MAX_TWINNING_USER) return false;
 			
-			if (priority <= Parameters.PRIO_NOVICE && (l.getSuitableNovice() || l.getMinAge() > 17) == false && this.novice == true) return false;
+			// Inibito in seguito alla chiaccherata con Stefano 
+			// il 21/06
+			//
+			//if (priority <= Parameters.PRIO_NOVICE && (l.getSuitableNovice() || l.getMinAge() > 17) == false && this.novice == true) return false;
 			
 			if (priority <= Parameters.PRIO_HANDICAP && l.getSuitableHandicap() == false && this.handicap == true) return false;
 			
@@ -274,7 +282,8 @@ public class Rover implements Comparable<Rover> {
 			// Caso Tavola Rotonda
 			RoundTable r = (RoundTable) e;
 			if (priority <= Parameters.PRIO_FULL && r.isFull(day)) return false;
-			if (priority <= Parameters.PRIO_TWIN_TAV && r.getPartecipantsTwinnings(day, this) >= Parameters.ROUNDTABLE_MAX_USER) return false;
+			
+			if (priority <= Parameters.PRIO_TWIN_TAV && r.getPartecipantsTwinnings(day, this) >= Parameters.ROUNDTABLE_MAX_TWINNING_USER) return false;
 			
 			if (priority <= Parameters.PRIO_EQUALS){
 				if (day == 2 && r.getCode().contentEquals(this.assign1.getCode())) 
@@ -300,15 +309,15 @@ public class Rover implements Comparable<Rover> {
 		switch (day) {
 		case 1:
 			assign1 = evt;
-			this.pro_1 = prio;
+			this.prio_1 = prio;
 			break;
 		case 2:
 			assign2 = evt;
-			this.pro_2 = prio;
+			this.prio_2 = prio;
 			break;
 		case 3:
 			assign3 = evt;
-			this.pro_3 = prio;
+			this.prio_3 = prio;
 			break;
 		default:
 			break;
@@ -369,7 +378,7 @@ public class Rover implements Comparable<Rover> {
 	
 	public void print(){
 		System.out.println(code + "\t " + name + ", " + surname + " GRUPPO: " + this.group +" - SATISF: " + this.getSatisfaction());
-		System.out.println("1)" + this.assign1.getCode() + " PRIO: " + this.pro_1 + " 2)" + this.assign2.getCode() + " PRIO: " + this.pro_2 + " 3)" + this.assign1.getCode() + " PRIO: " + this.pro_3); 
+		System.out.println("1)" + this.assign1.getCode() + " PRIO: " + this.prio_1 + " 2)" + this.assign2.getCode() + " PRIO: " + this.prio_2 + " 3)" + this.assign1.getCode() + " PRIO: " + this.prio_3); 
 	}
 
 	/**
@@ -385,5 +394,44 @@ public class Rover implements Comparable<Rover> {
 		if (sat1 < sat2 ) return -1;
 		if (sat1 > sat2 ) return 1;
 		return 0;
+	}
+
+	/**
+	 * Ritorna true se il rover deve essere assegnato nel giorno in questione.
+	 * 
+	 * @param day Giorno da considerare
+	 * @return True se il rover deve essere assegnato, false altrimenti
+	 */
+	public boolean toBeAssigned(int day){
+		if (day == 1) return to_assign1;
+		if (day == 2) return to_assign2;
+		if (day == 3) return to_assign3;
+		return false;
+	}
+	
+	/**
+	 * Permette di assegnare un vincolo di preassegnamento su un ragazzo
+	 * 
+	 * @param e Evento che deve essere preassegnato
+	 * @param day Giorno che deve essere preassegnato
+	 */
+	public void setConstraint(Event e, int day) {
+		switch (day) {
+		case 1:
+			this.assign1 = e;
+			this.to_assign1 = false;
+			this.prio_1 = -1;
+			break;
+		case 2:
+			this.assign2 = e;
+			this.to_assign2 = false;
+			this.prio_2 = -1;
+			break;
+		case 3:
+			this.assign3 = e;
+			this.to_assign3 = false;
+			this.prio_3 = -1;
+			break;
+		}
 	}
 }

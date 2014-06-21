@@ -234,6 +234,39 @@ public class MySqlConnector {
 		return list;
 	}
 	
+	public void getCostraints(RoverList rl, EventList el){
+		try {
+			stat = conn.createStatement();
+			ResultSet rs = stat.executeQuery("SELECT * FROM vincoli");
+			
+			while(rs.next()){
+				double code = rs.getDouble("codicecensimento");
+				String turn1 = rs.getString("turn1");
+				String turn2 = rs.getString("turn2");
+				String turn3 = rs.getString("turn3");
+				
+				Rover r = rl.getRover(code);
+				if (r == null) {
+					System.err.println("VINCOLO SU RAGAZZO ASSENTE: " + r);
+					continue;
+				}
+				Event e = null;
+				if (turn1 != null){
+					if ((e = el.getEvent(turn1)) == null) System.err.println("EVENTO CON VINCOLO ASSENTE: " + turn1);
+					else r.setConstraint(e, 1);
+				}
+				if (turn2 != null){
+					if ((e = el.getEvent(turn2)) == null) System.err.println("EVENTO CON VINCOLO ASSENTE: " + turn2);
+					else r.setConstraint(e, 2);
+				}
+				if (turn3 != null){
+					if ((e = el.getEvent(turn3)) == null) System.err.println("EVENTO CON VINCOLO ASSENTE: " + turn3);
+					else r.setConstraint(e, 3);
+				}
+			}
+		} catch (SQLException e) { e.printStackTrace(); }
+	}
+	
 	public void setSubcamps(EventList el){
 		
 		// Associazione degli eventi ai sottocampi

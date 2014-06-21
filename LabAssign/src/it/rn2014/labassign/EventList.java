@@ -27,7 +27,7 @@ import java.util.PriorityQueue;
  */
 public class EventList implements Iterable<Event>{
 
-	/** Lista di priorità dei rover */
+	/** Lista di priorità degli eventi */
 	private PriorityQueue<Event> queue;
 	
 	
@@ -65,6 +65,16 @@ public class EventList implements Iterable<Event>{
 	 */
 	public Event getEvent(){
 		return queue.peek();
+	}
+	
+	/**
+	 * Ritorna l'evento con il codice richiesto 
+	 * @return L'evento con il codice richiesto, false altrimenti
+	 */
+	public Event getEvent(String code){
+		for(Event e: queue)
+			if (e.getCode().contentEquals(code)) return e;
+		return null;
 	}
 	
 	/**
