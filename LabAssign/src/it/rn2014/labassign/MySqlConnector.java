@@ -23,64 +23,94 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Classe che si occupa di gestire la comunicazione con il Database MySQL e
+ * che permette di raccogliere i dati e di popolare le strutture necessarie al calcolo.
+ * 
+ * I dati di accesso al DB vengono impostati nel file `labassign.conf`
+ * 
+ * @author Nicola Corti
+ */
 public class MySqlConnector {
 
-	private String JDBC_DRIVER = "com.mysql.jdbc.Driver";  
+	/** Stringa della classe del driver */
+	private String JDBC_DRIVER = "com.mysql.jdbc.Driver";
+	/** Stringa del URL del database */
 	private String DB_URL = null;
 
-	Connection conn;
-	Statement stat;
+	/** Connesione al DB */
+	private Connection conn;
+	/** Statement contenente le query */
+	private Statement stat;
 	
+	/**
+	 * Costruttore che inizializza i parametri di accesso al db
+	 */
 	public MySqlConnector(){
 		DB_URL = "jdbc:mysql://"+Parameters.DB_HOST+"/"+Parameters.DB_NAME;
 		conn = null;
 		stat = null;
 	}
 	
+	/**
+	 * Metodo che stabilisce la connessione con il DB.
+	 * E' necessario invocare questa funzione prima di effettuare qualsiasi altro metodo
+	 * della classe MySqlConnector
+	 */
 	public void connect(){
 		try {
 			Class.forName(JDBC_DRIVER);
-			
 		    conn = DriverManager.getConnection(DB_URL,Parameters.DB_USER,Parameters.DB_PASS);
 		    
 		} catch (ClassNotFoundException e) { e.printStackTrace();
 		} catch (SQLException e) { e.printStackTrace(); }
 	}
-	
-	public void execute(String p){
+		
+	/**
+	 * Raccoglie i gruppi dal database e li restituisce in una lista
+	 * 
+	 * @return Una lista di Group (vuota se non ci sono gruppi).
+	 */
+	public List<Group> getGroups() {
+		
+		List<Group> list = new ArrayList<>();
 		
 		try {
 			stat = conn.createStatement();
-			ResultSet rs = stat.executeQuery(p);
+			ResultSet rs = stat.executeQuery("SELECT * FROM gruppi");
 			
-			int column = rs.getMetaData().getColumnCount();
-			for(int i = 1; i <= column; i++){
-				System.out.print(rs.getMetaData().getColumnName(i) + ", ");
-			}
-			System.out.println();
-			
+			Group g;
 			while(rs.next()){
-				for(int i = 1; i <= column; i++){
-					System.out.print(rs.getString(i) + ", ");
-				}
-				System.out.print("\n");
+				
+				int id = rs.getInt("id");
+				String name = rs.getString("nome");
+				int sottocampo = rs.getInt("sottocampo");
+				String idgruppo = rs.getString("idgruppo");
+				String idunita = rs.getString("idunita");
+				int gemellaggio = rs.getInt("gemellaggio");
+				
+				g = new Group(id, name, idgruppo, idunita, sottocampo, gemellaggio);
+				list.add(g);
 			}
-			
 		} catch (SQLException e) { e.printStackTrace(); }
-		
+		return list;
 	}
+
 	
+	/**
+	 * Raccoglie i rover dal database e li inserisce in una RoverList
+	 * Inoltre effettua un controllo se sono presenti gruppi non presenti nel modello
+	 * 
+	 * @param gl Una lista di gruppi relativi ai ragazzi
+	 * @return Una lista di Rover
+	 */
 	public RoverList getRovers(List<Group> gl){
 		RoverList list = new RoverList();
-		
 		
 		try {
 			stat = conn.createStatement();
 			ResultSet rs = stat.executeQuery("SELECT * FROM ragazzi");
 			
-			
-			
-			Rover r;
 			while(rs.next()){
 				
 				String name = rs.getString("nome");
@@ -98,16 +128,12 @@ public class MySqlConnector {
 						break;
 					}
 				}
-				if (group == null) {
-					
-					System.err.println("\nGRUPPO ASSENTE NEL DB! ID: " + idgroup + " UNITA " + idunity);
-					//throw new RuntimeException("GRUPPO NON PRESENTE NEL DB");
-				}
+				if (group == null) System.err.println("\nGRUPPO ASSENTE NEL DB! ID: " + idgroup + " UNITA " + idunity);
 				
 				boolean novice = rs.getBoolean("novizio");
 				boolean handicap = rs.getBoolean("handicap");
 				
-				r = new Rover(name, surname, code, age, handicap, novice, group);
+				Rover r = new Rover(name, surname, code, age, handicap, novice, group);
 				
 				boolean road1 = rs.getBoolean("stradadicoraggio1");
 				boolean road2 = rs.getBoolean("stradadicoraggio2");
@@ -116,7 +142,6 @@ public class MySqlConnector {
 				boolean road5 = rs.getBoolean("stradadicoraggio5");
 				
 				r.setRoadsPreference(road1, road2, road3, road4, road5);
-				
 				list.addRover(r);
 			}
 			
@@ -125,6 +150,13 @@ public class MySqlConnector {
 	}
 	
 
+	/**
+	 * Raccoglie le tavole rotonde dal database e ritorna una EventList che li contiene
+	 * Controlla inoltre se sono presenti eventi organizzati da gruppi assenti
+	 * 
+	 * @param gl Lista di gruppi
+	 * @return Una Lista di eventi contenente solamente Tavole rotonde
+	 */
 	public EventList getRoundTable(List<Group> gl){
 		EventList roundTables = new EventList();
 		
@@ -136,11 +168,10 @@ public class MySqlConnector {
 				String name = rs.getString("nome");
 				String code = rs.getString("codice");
 				
-				//int subcamp = rs.getInt("sottocampo");
 				String organizer = rs.getString("organizzatore");
 				Group group = null;
 				
-				// Vado a prendere il gruppo se e' un evento RS
+				// Vado a prendere il gruppo
 				if(organizer.contains("RS")){
 					String idgruppo = rs.getString("idgruppo");
 					String idunita = rs.getString("idunita");
@@ -179,6 +210,14 @@ public class MySqlConnector {
 		return roundTables;
 	}
 
+
+	/**
+	 * Raccoglie i laboratori dal database e ritorna una EventList che li contiene
+	 * Controlla inoltre se sono presenti eventi organizzati da gruppi assenti
+	 * 
+	 * @param gl Lista di gruppi
+	 * @return Una Lista di eventi contenente solamente Laboratori
+	 */
 	public EventList getLabs(List<Group> gl){
 		EventList list = new EventList();
 				
@@ -234,6 +273,13 @@ public class MySqlConnector {
 		return list;
 	}
 	
+
+	/**
+	 * Raccoglie gli assegnamenti preesistenti dal database e li aggiunge ai ragazzi.
+	 * 
+	 * @param rl Lista di rover
+	 * @param el Lista di eventi
+	 */
 	public void getCostraints(RoverList rl, EventList el){
 		try {
 			stat = conn.createStatement();
@@ -267,6 +313,12 @@ public class MySqlConnector {
 		} catch (SQLException e) { e.printStackTrace(); }
 	}
 	
+	/**
+	 * Assegna i laboratori ai sottocampi in modo che siano bilanciati e che le strade di coraggio
+	 * siano ripartite equamente
+	 * 
+	 * @param el Lista di eventi
+	 */
 	public void setSubcamps(EventList el){
 		
 		// Associazione degli eventi ai sottocampi
@@ -319,40 +371,53 @@ public class MySqlConnector {
 	}
 	
 	
+	/**
+	 * Chiude la connessione con il database
+	 */
 	public void close(){
 		try {
 			stat.close();
 			conn.close();
 		} catch (SQLException e) { e.printStackTrace(); }
 	}
-
-	public List<Group> getGroups() {
-		
-		List<Group> list = new ArrayList<>();
-		
+	
+	
+	////////////////////////////////////////
+	//////////// Metodi Protetti ///////////
+	////////////////////////////////////////
+	
+	/**
+	 * DEBUG: Effettua una query sul database e stampa i risultati su
+	 * Standard Output
+	 * 
+	 * @param p La query da eseguire
+	 */
+	protected void execute(String p){
 		try {
 			stat = conn.createStatement();
-			ResultSet rs = stat.executeQuery("SELECT * FROM gruppi");
+			ResultSet rs = stat.executeQuery(p);
 			
-			Group g;
-			while(rs.next()){
-				
-				int id = rs.getInt("id");
-				String name = rs.getString("nome");
-				int sottocampo = rs.getInt("sottocampo");
-				String idgruppo = rs.getString("idgruppo");
-				String idunita = rs.getString("idunita");
-				int gemellaggio = rs.getInt("gemellaggio");
-				
-				g = new Group(id, name, idgruppo, idunita, sottocampo, gemellaggio);
-				list.add(g);
+			int column = rs.getMetaData().getColumnCount();
+			for(int i = 1; i <= column; i++){
+				System.out.print(rs.getMetaData().getColumnName(i) + ", ");
 			}
+			System.out.println();
 			
+			while(rs.next()){
+				for(int i = 1; i <= column; i++){
+					System.out.print(rs.getString(i) + ", ");
+				}
+				System.out.print("\n");
+			}
 		} catch (SQLException e) { e.printStackTrace(); }
-		return list;
 	}
-
-	public void update(String string) {
+	
+	/**
+	 * Esegue una query di update/insert/delete sul database
+	 * 
+	 * @param string Query da eseguire
+	 */
+	protected void update(String string) {
 		try {
 			stat = conn.createStatement();
 			stat.executeUpdate(string);
@@ -360,7 +425,14 @@ public class MySqlConnector {
 		} catch (SQLException e) { e.printStackTrace(); }
 	}
 	
-	public java.sql.PreparedStatement getPrepared(String s){
+	/**
+	 * Genera un prepared Statement per effettuare un operazione su DB con stringhe
+	 * che siano correttamente `escaped`
+	 * 
+	 * @param s Query che contiene marcatori che devono essere riempiti
+	 * @return Un prepared statement, che deve essere completato e poi eseguito
+	 */
+	protected java.sql.PreparedStatement getPrepared(String s){
 		try {
 			return conn.prepareStatement(s);
 		} catch (SQLException e) { e.printStackTrace();
@@ -368,13 +440,26 @@ public class MySqlConnector {
 		}
 	}
 	
-	public void updatePrepared(java.sql.PreparedStatement s) {
+	/**
+	 * Esegue un PreparedStatement sul database.
+	 * Nota che il PreparedStatement deve essere correttamente completato per poter
+	 * essere eseguito
+	 * 
+	 * @param s Un prepared statement
+	 */
+	protected void updatePrepared(java.sql.PreparedStatement s) {
 		try {
 			s.executeUpdate();
 		} catch (SQLException e) { e.printStackTrace(); }
 	}
 	
-	public int executeCount(String string) {
+	/**
+	 * Esegue una query e calcola la dimensione del recordset che viene ritornato come risultato
+	 * 
+	 * @param string Query da eseguire
+	 * @return La dimensione in righe del risultato
+	 */
+	protected int executeCount(String string) {
 		int size = 0;
 		try {
 			stat = conn.createStatement();
@@ -385,12 +470,18 @@ public class MySqlConnector {
 		
 	}
 	
-	public String executeString(String string) {
+	/**
+	 * Esegue una query che ritorna una sola riga ed una sola colonna, e ritorna quel valore
+	 * nel formato Stringa
+	 * 
+	 * @param string Query da eseguire
+	 * @return Stringa relativa al risultato
+	 */
+	protected String executeString(String string) {
 		try {
 			stat = conn.createStatement();
 			ResultSet rs = stat.executeQuery(string);
 			rs.next();
-			System.out.println("RETURNING " + rs.getString(1));
 			return rs.getString(1);		
 		} catch (SQLException e) { e.printStackTrace(); }
 		return null;
