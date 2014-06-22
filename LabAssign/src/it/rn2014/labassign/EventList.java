@@ -48,16 +48,6 @@ public class EventList implements Iterable<Event>{
 	}
 	
 	/**
-	 * Aggiunge una serie di eventi da una EventList
-	 * 
-	 * @param elist EventList da cui aggiungere gli eventi
-	 */
-	public void addEvents(EventList elist) {
-		for (Event e: elist)
-			this.addEvent(e);
-	}
-	
-	/**
 	 * Ritorna il primo evento nella coda di priorità 
 	 * @return Il primo evento nella coda di priorità
 	 */
@@ -105,9 +95,8 @@ public class EventList implements Iterable<Event>{
 	 * @param newworkingday Il working day da aggiornare
 	 */
 	protected void updateWorkingDay(int newworkingday){
-		Iterator<Event> it = queue.iterator();
-		while(it.hasNext())
-			it.next().updateWorkingDay(newworkingday);
+		for (Event e: queue)
+			e.updateWorkingDay(newworkingday);
 	}
 	
 	/**

@@ -259,7 +259,6 @@ public class Rover implements Comparable<Rover> {
 			
 			// Inibito in seguito alla chiaccherata con Stefano 
 			// il 21/06
-			//
 			//if (priority <= Parameters.PRIO_NOVICE && (l.getSuitableNovice() || l.getMinAge() > 17) == false && this.novice == true) return false;
 			
 			if (priority <= Parameters.PRIO_HANDICAP && l.getSuitableHandicap() == false && this.handicap == true) return false;

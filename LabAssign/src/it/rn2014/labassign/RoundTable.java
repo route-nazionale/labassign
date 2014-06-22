@@ -62,7 +62,10 @@ public class RoundTable extends Event {
 	 */
 	public void setTurn(int t){
 		this.turn = t;
-		this.setEnabled((this.getWorkingDay() == turn) ? true : false);
+		if (1 == turn)
+			this.setEnabled(true);
+		else
+			this.setEnabled(false);
 	}
 	
 	/**
@@ -77,6 +80,13 @@ public class RoundTable extends Event {
 	@Override
 	protected void updateWorkingDay(int day) {
 		super.updateWorkingDay(day);
-		this.setEnabled((day == turn) ? true : false); 
+		if (day == turn){
+			System.err.println("ATTIVO EVENTO TAVOLA");
+			this.setEnabled(true);
+		}
+		else {
+			System.err.println("DISATTIVO EVENTO TAVOLA");
+			this.setEnabled(false);
+		}
 	}
 }

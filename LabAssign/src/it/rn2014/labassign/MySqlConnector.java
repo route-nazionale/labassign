@@ -151,14 +151,13 @@ public class MySqlConnector {
 	
 
 	/**
-	 * Raccoglie le tavole rotonde dal database e ritorna una EventList che li contiene
+	 * Raccoglie le tavole rotonde dal database e li aggiunge ad una EventList gia' esistente
 	 * Controlla inoltre se sono presenti eventi organizzati da gruppi assenti
 	 * 
 	 * @param gl Lista di gruppi
-	 * @return Una Lista di eventi contenente solamente Tavole rotonde
+	 * @param el Lista di eventi
 	 */
-	public EventList getRoundTable(List<Group> gl){
-		EventList roundTables = new EventList();
+	public void getRoundTable(List<Group> gl, EventList el){
 		
 		try {
 			stat = conn.createStatement();
@@ -204,10 +203,10 @@ public class MySqlConnector {
 				boolean turno3 = rs.getBoolean("turno3");
 				if(turno3) day = 3;
 				roundTable.setTurn(day);
+				
+				el.addEvent(roundTable);
 			}
 		} catch (SQLException e) { e.printStackTrace(); }
-		
-		return roundTables;
 	}
 
 
@@ -297,7 +296,7 @@ public class MySqlConnector {
 				
 				Rover r = rl.getRover(code);
 				if (r == null) {
-					System.err.println("VINCOLO SU RAGAZZO ASSENTE: " + r);
+					System.err.println("VINCOLO SU RAGAZZO ASSENTE: " + code);
 					continue;
 				}
 				Event e = null;

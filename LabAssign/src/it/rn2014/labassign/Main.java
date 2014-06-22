@@ -87,7 +87,7 @@ public class Main {
 		el.addEvent(codici);
 		
 		System.out.print("Recupero le tavole rotonde dal DB...");
-		el.addEvents(conn.getRoundTable(gl));
+		conn.getRoundTable(gl, el);
 		System.out.print("OK!\n");
 		
 		// Generazione casuale delle tavole rotonde
@@ -118,7 +118,7 @@ public class Main {
 		conn.setSubcamps(el);
 		System.out.print("OK!\n");
 		
-		
+		// Genero l'assegnamento
 		beginningAssignment(rl, el);
 		
 		
@@ -190,7 +190,7 @@ public class Main {
 			
 			System.out.print("$ GIORNO " + workingday + "...");
 			el.updateWorkingDay(workingday);
-			
+						
 			// Itero sui rover in archivio
 			for (Rover r : rl){				
 				
