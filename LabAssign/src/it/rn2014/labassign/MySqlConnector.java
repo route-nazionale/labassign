@@ -371,6 +371,15 @@ public class MySqlConnector {
 	}
 	
 	
+	public void sendResult(RoverList rl){
+		for (Rover r: rl){
+			String query = "INSERT INTO risultati (codicecensimento, turno1, priorita1, turno2, priorita2, turno3, priorita3, soddisfacimento) VALUES (";
+			query += r.getCode() + "," + r.getEventCode(1) + "," + r.getPriority(1)+ "," + r.getEventCode(2) + "," + r.getPriority(2) + "," + r.getEventCode(3) + "," + r.getPriority(3) + "," + r.getSatisfaction() + ")";
+			this.update(query);
+		}
+	}
+	
+	
 	/**
 	 * Chiude la connessione con il database
 	 */

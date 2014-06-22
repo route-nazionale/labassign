@@ -24,7 +24,6 @@ import java.util.PriorityQueue;
  * l'esecuzione all'interno dell'algoritmo.
  * 
  * @author Nicola Corti
- *
  */
 public class RoverList implements Iterable<Rover> {
 
@@ -132,6 +131,9 @@ public class RoverList implements Iterable<Rover> {
 		return queue.iterator();
 	}
 	
+	/**
+	 * Stampa tutti i rover nella lista
+	 */
 	public void print(){
 		int i = 0;
 		for (Rover r: queue){

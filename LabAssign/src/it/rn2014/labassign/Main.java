@@ -95,6 +95,14 @@ public class Main {
 //			el.addEvent(r);
 //		}
 		
+		System.out.print("Recupero i vincoli preesistenti dal DB...");
+		conn.getCostraints(rl, el);
+		System.out.print("OK!\n");
+		
+		System.out.print("Imposto i vincoli preesistenti per le tavole rotonde...");
+		el.computeConstraints(rl);
+		System.out.print("OK!\n");
+		
 		
 		System.out.print("Chiudo la connessione al DB...");
 		conn.close();	
@@ -104,7 +112,9 @@ public class Main {
 		conn.setSubcamps(el);
 		System.out.print("OK!\n");
 		
+		
 		beginningAssignment(rl, el);
+		
 		
 		BufferedReader var = new BufferedReader(new InputStreamReader(System.in));
 		System.out.println("Stampo le schede dei Laboratori? [S/n]");
@@ -177,6 +187,8 @@ public class Main {
 			
 			// Itero sui rover in archivio
 			for (Rover r : rl){				
+				
+				if (!r.toBeAssigned(workingday)) continue;
 				
 				boolean find = false;		// Flag per indicare se ho trovato un'associazione
 				int find_prio = -1;			// Valore di priorita' attuale (utile per sistemare)

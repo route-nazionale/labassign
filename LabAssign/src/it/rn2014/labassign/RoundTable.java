@@ -22,6 +22,9 @@ package it.rn2014.labassign;
  */
 public class RoundTable extends Event {
 
+	/** Turno in cui viene effettuata una tavola rotonda */
+	private int turn = 0;
+	
 	/**
 	 * Costruttore base per una nuova tavola rotonda, che imposta automaticamente il numero
 	 * massimo di partecipanti ad una tavola rotonda.
@@ -51,11 +54,24 @@ public class RoundTable extends Event {
 		super(code, name, maxpartecipant, minpartecipant, organizer);
 	}
 	
-	private int turn = 0;
-	
+	/**
+	 * Funzione che imposta il turno di una tavola rotonda e attiva o disattiva
+	 * l'evento per l'assegnamento in funzione del giorno
+	 * 
+	 * @param t Turno in cui deve essere attiva la tavola rotonda
+	 */
 	public void setTurn(int t){
 		this.turn = t;
 		this.setEnabled((this.getWorkingDay() == turn) ? true : false);
+	}
+	
+	/**
+	 * Ritorna il turno della tavola rotonda
+	 * 
+	 * @return Il turno della tavola rotonda
+	 */
+	public int getTurn(){
+		return this.turn;
 	}
 
 	@Override

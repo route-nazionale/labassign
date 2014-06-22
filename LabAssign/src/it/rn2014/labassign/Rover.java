@@ -376,6 +376,9 @@ public class Rover implements Comparable<Rover> {
 		return result;
 	}
 	
+	/**
+	 * Stampa una rappresentazione simbola del rover su standard output
+	 */
 	public void print(){
 		System.out.println(code + "\t " + name + ", " + surname + " GRUPPO: " + this.group +" - SATISF: " + this.getSatisfaction());
 		System.out.println("1)" + this.assign1.getCode() + " PRIO: " + this.prio_1 + " 2)" + this.assign2.getCode() + " PRIO: " + this.prio_2 + " 3)" + this.assign1.getCode() + " PRIO: " + this.prio_3); 
@@ -433,5 +436,37 @@ public class Rover implements Comparable<Rover> {
 			this.prio_3 = -1;
 			break;
 		}
+	}
+
+	/**
+	 * Ritorna il codice evento del giorno desiderato.
+	 * Deve essere effettuato dopo un assegnamento.
+	 * 
+	 * @param day Giorno dell'evento di cui si vuole il codice
+	 * @return La stringa che rappresenta il codice dell'evento
+	 */
+	public String getEventCode(int day) {
+		switch (day) {
+		case 1: return assign1.getCode();
+		case 2: return assign2.getCode();
+		case 3: return assign3.getCode();
+		}
+		return null;
+	}
+	
+	/**
+	 * Ritorna la priorita' dell'assegnamento relativo al giorno desiderato.
+	 * Deve essere effettuato dopo un assegnamento.
+	 * 
+	 * @param day Giorno dell'evento di cui si vuole la priorita dell'assegnamento
+	 * @return Il livello di priorita' con cui e' stato effettuato l'assegnamento
+	 */
+	public int getPriority(int day) {
+		switch (day) {
+		case 1: return prio_1;
+		case 2: return prio_2;
+		case 3: return prio_3;
+		}
+		return -1;
 	}
 }

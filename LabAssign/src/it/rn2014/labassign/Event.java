@@ -24,10 +24,6 @@ import java.util.List;
  * 
  * @author Nicola Corti
  */
-/**
- * @author nicola
- *
- */
 public class Event implements Comparable<Event> {
 
 	

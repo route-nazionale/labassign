@@ -23,13 +23,11 @@ import java.util.PriorityQueue;
  * l'esecuzione all'interno dell'algoritmo.
  * 
  * @author Nicola Corti
- *
  */
 public class EventList implements Iterable<Event>{
 
 	/** Lista di priorità degli eventi */
 	private PriorityQueue<Event> queue;
-	
 	
 	
 	/**
@@ -118,5 +116,29 @@ public class EventList implements Iterable<Event>{
 	@Override
 	public Iterator<Event> iterator() {
 		return queue.iterator();
+	}
+
+
+	/**
+	 * Metodo che calcola i vincoli sugli organizzatori delle tavole rotonde, in modo che
+	 * chi organizza una tavola rotonda sia impegnato per tutto il turno in cui viene svolta
+	 * la tavola.
+	 * 
+	 * @param rl Lista di ragazzi
+	 */
+	public void computeConstraints(RoverList rl) {
+		for (Event e : queue){
+			if (e instanceof RoundTable){
+				RoundTable r = (RoundTable) e;
+				Group organizer = r.getOrganizer();
+				
+				for (Rover rov: rl){
+					if (rov.getGroup() == organizer)
+						rov.setConstraint(r, r.getTurn());
+				}
+			}
+			
+		}
+		
 	}
 }
