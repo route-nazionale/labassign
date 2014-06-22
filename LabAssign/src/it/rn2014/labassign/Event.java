@@ -65,7 +65,7 @@ public class Event implements Comparable<Event> {
 	 *  realizzare l'ordinamento fra due eventi */
 	private int workingday = 1;
 	/** IMPLEMENTAZIONE Indica se un evento deve essere considerato ai fini dell'assegnamento oppure no */
-	private boolean enabled = false;
+	private boolean enabled = true;
 	
 	/**
 	 * Costruttore per generare un nuovo evento fornendo tutti i campi necessari

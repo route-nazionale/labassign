@@ -23,8 +23,6 @@ package it.rn2014.labassign;
  */
 public class Group {
 
-	/** ID univoco del gruppo */
-	private int id;
 	/** Nome del gruppo */
 	private String name;
 	/** Codice del gruppo */ 
@@ -39,15 +37,13 @@ public class Group {
 	/**
 	 * Costruttore base per generare un nuovo gruppo.
 	 * 
-	 * @param id ID univoco del gruppo
 	 * @param name Nome del gruppo
 	 * @param code Codice del gruppo
 	 * @param subcamp Codice del sottocampo
 	 * @param twinning Codice del gemellaggio
 	 */
-	public Group(int id, String name, String code, String unity, int subcamp, int twinning) {
+	public Group(String name, String code, String unity, int subcamp, int twinning) {
 		super();
-		this.id = id;
 		this.name = name;
 		this.code = code;
 		this.unity = unity;
@@ -101,6 +97,6 @@ public class Group {
 	 */
 	@Override
 	public String toString(){
-		return "ID " + id + "Group " + name + " Code: " + code;
+		return "Gruppo: " + name + " Code: " + code + " Unita: " + unity;
 	}
 }

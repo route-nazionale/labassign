@@ -80,6 +80,12 @@ public class Main {
 		EventList el = conn.getLabs(gl);
 		System.out.print("OK!\n");
 		
+		// Aggiungo l'evento codici
+		Lab codici = new Lab("CODICI", "CODICI", 0, 1000, null, false, false, 100, 1, 0);
+		codici.setRoadsPreference(true, true, true, true, true);
+		codici.setEnabled(false);
+		el.addEvent(codici);
+		
 		System.out.print("Recupero le tavole rotonde dal DB...");
 		el.addEvents(conn.getRoundTable(gl));
 		System.out.print("OK!\n");

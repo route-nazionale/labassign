@@ -82,14 +82,14 @@ public class MySqlConnector {
 			Group g;
 			while(rs.next()){
 				
-				int id = rs.getInt("id");
 				String name = rs.getString("nome");
 				int sottocampo = rs.getInt("sottocampo");
 				String idgruppo = rs.getString("idgruppo");
 				String idunita = rs.getString("idunita");
-				int gemellaggio = rs.getInt("gemellaggio");
+				// TODO va cambiato il nome nella vista
+				int gemellaggio = rs.getInt("gemellagio");
 				
-				g = new Group(id, name, idgruppo, idunita, sottocampo, gemellaggio);
+				g = new Group(name, idgruppo, idunita, sottocampo, gemellaggio);
 				list.add(g);
 			}
 		} catch (SQLException e) { e.printStackTrace(); }
@@ -187,11 +187,11 @@ public class MySqlConnector {
 				int maxpartecipant = rs.getInt("maxpartecipanti");
 				int minpartecipant = rs.getInt("minpartecipanti");
 				
-				boolean road1 = rs.getBoolean("stradadicoraggio1");
-				boolean road2 = rs.getBoolean("stradadicoraggio2");
-				boolean road3 = rs.getBoolean("stradadicoraggio3");
-				boolean road4 = rs.getBoolean("stradadicoraggio4");
-				boolean road5 = rs.getBoolean("stradadicoraggio5");
+				boolean road1 = rs.getBoolean("stradacoraggio1");
+				boolean road2 = rs.getBoolean("stradacoraggio2");
+				boolean road3 = rs.getBoolean("stradacoraggio3");
+				boolean road4 = rs.getBoolean("stradacoraggio4");
+				boolean road5 = rs.getBoolean("stradacoraggio5");
 				
 				RoundTable roundTable = new RoundTable(code, name, maxpartecipant, minpartecipant, group);
 				roundTable.setRoadsPreference(road1, road2, road3, road4, road5);
@@ -261,7 +261,11 @@ public class MySqlConnector {
 				boolean road5 = rs.getBoolean("stradadicoraggio5");
 				
 				boolean handicap = rs.getBoolean("handicap");
-				boolean novice = rs.getBoolean("novizio");
+				
+				// Non disponiamo dell'informazione se un laboratorio e' adatto o meno
+				// ai novizi per cui e' stato disabilitato
+				//boolean novice = rs.getBoolean("novizio");
+				boolean novice = false;
 				
 				l = new Lab(code, name, minpartecipant, maxpartecipant, group, novice, handicap, maxage, minage, subcamp);
 				l.setRoadsPreference(road1,road2, road3, road4, road5);
