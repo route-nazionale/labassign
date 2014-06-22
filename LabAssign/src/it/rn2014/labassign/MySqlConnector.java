@@ -371,11 +371,28 @@ public class MySqlConnector {
 	}
 	
 	
-	public void sendResult(RoverList rl){
+	/**
+	 * Metodo che scrive sul Database, nelle tabelle dei risultati gli assegnamenti dei ragazzi, e gli
+	 * assegnamenti delle tavole rotonde.
+	 * 
+	 * @param rl Elenco di Rover con assegnamenti effettuati
+	 * @param el Elenco di Eventi gia' assegnati
+	 */
+	public void sendResult(RoverList rl, EventList el){
+		this.update("DELETE * FROM risultati_ragazzi");
 		for (Rover r: rl){
-			String query = "INSERT INTO risultati (codicecensimento, turno1, priorita1, turno2, priorita2, turno3, priorita3, soddisfacimento) VALUES (";
+			String query = "INSERT INTO risultati_ragazzi (codicecensimento, turno1, priorita1, turno2, priorita2, turno3, priorita3, soddisfacimento) VALUES (";
 			query += r.getCode() + "," + r.getEventCode(1) + "," + r.getPriority(1)+ "," + r.getEventCode(2) + "," + r.getPriority(2) + "," + r.getEventCode(3) + "," + r.getPriority(3) + "," + r.getSatisfaction() + ")";
 			this.update(query);
+		}
+		
+		this.update("DELETE * FROM risultati_laboratori");
+		for (Event e: el){
+			if (e instanceof Lab){
+				Lab l = (Lab) e;
+				String query = "INSERT INTO risultati_laboratori (codice, sottocampo) VALUES (" + l.getCode() + "," + l.getSubcamp() + ")";
+				this.update(query);
+			}
 		}
 	}
 	
