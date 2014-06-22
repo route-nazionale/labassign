@@ -80,13 +80,9 @@ public class RoundTable extends Event {
 	@Override
 	protected void updateWorkingDay(int day) {
 		super.updateWorkingDay(day);
-		if (day == turn){
-			System.err.println("ATTIVO EVENTO TAVOLA");
+		if (day == turn)
 			this.setEnabled(true);
-		}
-		else {
-			System.err.println("DISATTIVO EVENTO TAVOLA");
+		else 
 			this.setEnabled(false);
-		}
 	}
 }
