@@ -354,7 +354,4 @@ public class Event implements Comparable<Event> {
 	 */
 	protected boolean isEnabled(){ return this.enabled; }
 
-	public int getMaxPartecipant() {
-		return maxpartecipant;
-	}
 }
