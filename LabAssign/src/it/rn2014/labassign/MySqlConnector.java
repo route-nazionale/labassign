@@ -115,7 +115,7 @@ public class MySqlConnector {
 				
 				String name = rs.getString("nome");
 				String surname = rs.getString("cognome");
-				double code = rs.getDouble("codicecensimento");
+				int code = rs.getInt("codicecensimento");
 				int age = rs.getInt("eta");
 				
 				String idgroup = rs.getString("idgruppo");
@@ -289,7 +289,7 @@ public class MySqlConnector {
 			ResultSet rs = stat.executeQuery("SELECT * FROM vincoli");
 			
 			while(rs.next()){
-				double code = rs.getDouble("codicecensimento");
+				int code = rs.getInt("codicecensimento");
 				String turn1 = rs.getString("turn1");
 				String turn2 = rs.getString("turn2");
 				String turn3 = rs.getString("turn3");
@@ -382,14 +382,21 @@ public class MySqlConnector {
 	 * @param el Elenco di Eventi gia' assegnati
 	 */
 	public void sendResult(RoverList rl, EventList el){
-		this.update("DELETE * FROM risultati_ragazzi");
+		this.update("DELETE FROM risultati_ragazzi");
 		for (Rover r: rl){
 			String query = "INSERT INTO risultati_ragazzi (codicecensimento, turno1, priorita1, turno2, priorita2, turno3, priorita3, soddisfacimento) VALUES (";
-			query += r.getCode() + "," + r.getEventCode(1) + "," + r.getPriority(1)+ "," + r.getEventCode(2) + "," + r.getPriority(2) + "," + r.getEventCode(3) + "," + r.getPriority(3) + "," + r.getSatisfaction() + ")";
-			this.update(query);
+			query += r.getCode() + ",?," + r.getPriority(1)+ ",?," + r.getPriority(2) + ",?," + r.getPriority(3) + "," + r.getSatisfaction() + ")";
+			java.sql.PreparedStatement p = this.getPrepared(query);
+			try{
+				p.setString(1, r.getEventCode(1));
+				p.setString(2, r.getEventCode(2));
+				p.setString(3, r.getEventCode(3));
+				
+				this.updatePrepared(p);
+			} catch ( SQLException e){ e.printStackTrace(); }
 		}
 		
-		this.update("DELETE * FROM risultati_laboratori");
+		this.update("DELETE FROM risultati_laboratori");
 		for (Event e: el){
 			if (e instanceof Lab){
 				Lab l = (Lab) e;

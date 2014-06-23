@@ -109,11 +109,6 @@ public class Main {
 		el.computeConstraints(rl);
 		System.out.print("OK!\n");
 		
-		
-		System.out.print("Chiudo la connessione al DB...");
-		conn.close();	
-		System.out.print("OK!\n");
-		
 		System.out.print("Ripartisco i laboratori nei sottocampi...");
 		conn.setSubcamps(el);
 		System.out.print("OK!\n");
@@ -123,7 +118,7 @@ public class Main {
 		
 		
 		BufferedReader var = new BufferedReader(new InputStreamReader(System.in));
-		System.out.println("Stampo le schede dei Laboratori? [S/n]");
+		System.out.println("Stampo le schede dei Laboratori? [s/n]");
 		String res = var.readLine();
 		if (res.contains("s") || res.contains("S")){
 			for (Event e: el){
@@ -131,7 +126,7 @@ public class Main {
 				e.print();
 			}
 		}
-		System.out.println("Stampo le schede delle Tavole Rotonde? [S/n]");
+		System.out.println("Stampo le schede delle Tavole Rotonde? [s/n]");
 		res = var.readLine();
 		if (res.contains("s") || res.contains("S")){
 			for (Event e: el){
@@ -139,12 +134,25 @@ public class Main {
 				e.print();
 			}
 		}
-		System.out.println("Stampo le associazioni dei ragazzi? [S/n]");
+		System.out.println("Stampo le associazioni dei ragazzi? [s/n]");
 		res = var.readLine();
 		if (res.contains("s") || res.contains("S")){
 			for (Rover r: rl)
 				r.print();
 		}
+		
+		System.out.println("Carico sul DB i risultati? [s/n]");
+		res = var.readLine();
+		if (res.contains("s") || res.contains("S")){
+			System.out.print("Eseguo query per l'inserimento dei risultati...");
+			conn.sendResult(rl, el);
+			System.out.print("OK!\n");
+		}
+		
+		System.out.print("Chiudo la connessione al DB...");
+		conn.close();	
+		System.out.print("OK!\n");
+		
 		
 		System.out.println("############## FINE! ##############");
 		System.out.println("# SODDISFAZIONE: " + rl.totalSatisfaction());
@@ -153,8 +161,6 @@ public class Main {
 		System.out.println("# PERCENTUALE: " + (rl.totalSatisfaction()/rl.totalMaxSatisfaction()));
 		System.out.println("###################################");
 		
-		
-
 		/*
 		double itercount = 0;
 		double globalsat = rl.totalSatisfaction()/rl.totalMaxSatisfaction();
