@@ -400,8 +400,12 @@ public class MySqlConnector {
 		for (Event e: el){
 			if (e instanceof Lab){
 				Lab l = (Lab) e;
-				String query = "INSERT INTO risultati_laboratori (codice, sottocampo) VALUES (" + l.getCode() + "," + l.getSubcamp() + ")";
-				this.update(query);
+				String query = "INSERT INTO risultati_laboratori (codice, sottocampo) VALUES (?," + l.getSubcamp() + ")";
+				java.sql.PreparedStatement p = this.getPrepared(query);
+				try {
+					p.setString(1, l.getCode());
+				} catch (SQLException e1) {	e1.printStackTrace(); }
+				this.updatePrepared(p);
 			}
 		}
 	}
