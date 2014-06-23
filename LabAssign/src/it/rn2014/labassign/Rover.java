@@ -36,7 +36,7 @@ public class Rover implements Comparable<Rover> {
 	/** Cognome del rs */
 	private String surname;
 	/** Codice censimento del rs */
-	private double code;
+	private int code;
 	/** Eta del rs */
 	private int age;
 	/** Gruppo di appartenenza del rs */
@@ -88,7 +88,7 @@ public class Rover implements Comparable<Rover> {
 	 * @param novice Novizio
 	 * @param group Gruppo di apparteneza
 	 */
-	public Rover(String name, String surname, double code, int age,
+	public Rover(String name, String surname, int code, int age,
 			boolean handicap, boolean novice, Group group) {
 		this.name = name;
 		this.surname = surname;
@@ -111,7 +111,7 @@ public class Rover implements Comparable<Rover> {
 	 * 
 	 * @return Il codice censimento del ragazzo
 	 */
-	public double getCode(){ return code; }
+	public int getCode(){ return code; }
 	
 	/**
 	 * Ritorna true se il rover e' un novizio

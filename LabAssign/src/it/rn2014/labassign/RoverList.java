@@ -71,7 +71,7 @@ public class RoverList implements Iterable<Rover> {
 	 * 
 	 * @return Il rover richiesto, null se il rover non viene trovato
 	 */
-	public Rover getRover(double codice){
+	public Rover getRover(int codice){
 		for (Rover r: queue)
 			if (r.getCode() == codice) return r;
 		return null;
