@@ -42,6 +42,9 @@ public class Parameters {
 	/** Numero massimo di partecipanti per lo stesso gemellaggio per tavola rotonda */
 	public static final int ROUNDTABLE_MAX_TWINNING_USER = 5;
 	
+	/** Percentuale oltre il quale un evento si considera overfull (pieno piu' del limite)*/
+	public static final double EVENT_PERC_OVERFULL = 0.15;
+	
 	///////////////
 	// ACCESSO DB
 	///////////////
@@ -61,6 +64,8 @@ public class Parameters {
 	
 	/** Priorita' vincolo numero persone eventi */
 	public static int PRIO_FULL = 5;
+	/** Priorita' vincolo numero persone eventi oltre limite sforato */
+	public static int PRIO_FULL_2 = 8;
 	/** Priorita' vincolo evento che soddisfa scelta strade */
 	public static int PRIO_ROAD = 1;
 	/** Priorita' vincolo evento che soddisfa scelta strade (almeno due strade distinte)*/
@@ -106,6 +111,7 @@ public class Parameters {
 			int max = 0;
 			
 			if ((PRIO_FULL = Integer.parseInt(prop.getProperty("PRIO_FULL"))) > max) max = PRIO_FULL;
+			if ((PRIO_FULL_2 = Integer.parseInt(prop.getProperty("PRIO_FULL_2"))) > max) max = PRIO_FULL_2;
 			if ((PRIO_ROAD = Integer.parseInt(prop.getProperty("PRIO_ROAD"))) > max) max = PRIO_ROAD;
 			if ((PRIO_ROAD_2 = Integer.parseInt(prop.getProperty("PRIO_ROAD_2"))) > max) max = PRIO_ROAD_2;
 			if ((PRIO_ROAD_3 = Integer.parseInt(prop.getProperty("PRIO_ROAD_3"))) > max) max = PRIO_ROAD_3;

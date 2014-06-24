@@ -267,6 +267,8 @@ public class Rover implements Comparable<Rover> {
 			
 			if (priority <= Parameters.PRIO_FULL && l.isFull(day)) return false;
 			
+			if (priority <= Parameters.PRIO_FULL_2 && l.isOverFull(day)) return false;
+			
 			if (priority <= Parameters.PRIO_EQUALS){
 				if (day == 2 && l.getCode().contentEquals(this.assign1.getCode())) 
 					return false;

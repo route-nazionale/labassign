@@ -127,12 +127,27 @@ public class Event implements Comparable<Event> {
 	 * @param day Giorno per cui si vuole controllare
 	 * @return True se l'evento e full, false altrimenti
 	 */
-	public boolean isFull(int day){
-		
+	public boolean isFull(int day){		
 		switch (day) {
 		case 1: return partecipant1.size() >= maxpartecipant;
 		case 2: return partecipant2.size() >= maxpartecipant;
 		case 3: return partecipant3.size() >= maxpartecipant;
+		default: return false;
+		}
+	}
+	
+	/**
+	 * Controlla se un evento è over-full per un dato giorno in input
+	 * Un evento si considera over-full se e' oltre il numero di persone previsto + una data percentuale
+	 * 
+	 * @param day Giorno per cui si vuole controllare
+	 * @return True se l'evento e full, false altrimenti
+	 */
+	public boolean isOverFull(int day) {
+		switch (day) {
+		case 1: return partecipant1.size() >= (maxpartecipant + (maxpartecipant * Parameters.EVENT_PERC_OVERFULL));
+		case 2: return partecipant2.size() >= (maxpartecipant + (maxpartecipant * Parameters.EVENT_PERC_OVERFULL));
+		case 3: return partecipant3.size() >= (maxpartecipant + (maxpartecipant * Parameters.EVENT_PERC_OVERFULL));
 		default: return false;
 		}
 	}
