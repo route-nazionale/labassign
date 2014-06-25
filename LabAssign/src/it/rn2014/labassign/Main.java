@@ -67,6 +67,19 @@ public class Main {
 		System.out.print("Connessione al DB...");
 		conn.connect();
 		System.out.print("OK!\n");
+
+		if(args.length > 1){
+			if(args[1].equals("--check")){
+				
+				SanityChecker sc = new SanityChecker(conn);
+				sc.runAllChecks();
+				
+				System.out.print("Chiudo la connessione al DB...");
+				conn.close();
+				System.out.print("OK!\n");
+				return;
+			}
+		}
 		
 		System.out.print("Recupero i gruppi dal DB...");
 		List<Group> gl = conn.getGroups();

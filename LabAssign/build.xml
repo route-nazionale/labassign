@@ -66,4 +66,13 @@
            <classpath refid="LabAssign.classpath"/>
         </javadoc>
     </target>
+
+    <target depends="build" name="runSanityChecks">
+        <java classname="it.rn2014.labassign.Main" failonerror="true" fork="yes">
+            <arg line="labassign.conf"/>
+            <arg line="--check"/>
+            <classpath refid="LabAssign.classpath"/>
+        </java>
+    </target>
+
 </project>

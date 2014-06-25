@@ -96,6 +96,16 @@ public class MySqlConnector {
 		return list;
 	}
 
+	public ResultSet executeRaw(String query) {
+		ResultSet rs = null;
+		try{
+			stat = conn.createStatement();
+			rs = stat.executeQuery(query);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return rs;
+	}
 	
 	/**
 	 * Raccoglie i rover dal database e li inserisce in una RoverList
