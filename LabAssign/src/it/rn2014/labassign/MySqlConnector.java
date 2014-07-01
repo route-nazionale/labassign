@@ -192,6 +192,22 @@ public class MySqlConnector {
 					}
 					if (group == null) System.err.println("\nGRUPPO ASSENTE NEL DB! ID: " + idgruppo + " UNITA " + idunita);
 				}	
+				
+				// Controllo la presenza del secondo gruppo
+				
+				Group group2 = null;
+				String idgruppo2 = rs.getString("idgruppo2");
+				String idunita2 = rs.getString("idunita2");
+				if (idgruppo2 != null){
+					for (Group g: gl){
+						if (g.sameGroup(idgruppo2, idunita2)){
+							group2 = g;
+							break;
+						}
+					}
+					if (group2 == null) System.err.println("\nGRUPPO (2) ASSENTE NEL DB! ID: " + idgruppo2 + " UNITA " + idunita2);
+				}	
+				
 			
 				int maxpartecipant = rs.getInt("maxpartecipanti");
 				int minpartecipant = rs.getInt("minpartecipanti");
@@ -202,7 +218,7 @@ public class MySqlConnector {
 				boolean road4 = rs.getBoolean("stradacoraggio4");
 				boolean road5 = rs.getBoolean("stradacoraggio5");
 				
-				RoundTable roundTable = new RoundTable(code, name, maxpartecipant, minpartecipant, group);
+				RoundTable roundTable = new RoundTable(code, name, maxpartecipant, minpartecipant, group, group2);
 				roundTable.setRoadsPreference(road1, road2, road3, road4, road5);
 				
 				int day = 1;

@@ -103,17 +103,6 @@ public class Main {
 		conn.getRoundTable(gl, el);
 		System.out.print("OK!\n");
 		
-		// Generazione casuale delle tavole rotonde
-//		for(int i = 1; i <= 33; i++){
-//			RoundTable r = new RoundTable("TAV-" + i, "TAVOLA " + i, 0, null);
-//			if (i % 5 == 0) r.setRoadsPreference(true, false, false, false, false);
-//			if (i % 5 == 1) r.setRoadsPreference(false, true, false, false, false);
-//			if (i % 5 == 2) r.setRoadsPreference(false, false, true, false, false);
-//			if (i % 5 == 3) r.setRoadsPreference(false, false, false, true, false);
-//			if (i % 5 == 4) r.setRoadsPreference(false, false, false, false, true);
-//			el.addEvent(r);
-//		}
-		
 		System.out.print("Recupero i vincoli preesistenti dal DB...");
 		conn.getCostraints(rl, el);
 		System.out.print("OK!\n");

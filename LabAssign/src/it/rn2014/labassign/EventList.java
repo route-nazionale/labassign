@@ -125,6 +125,14 @@ public class EventList implements Iterable<Event>{
 					if (rov.getGroup() == organizer)
 						rov.setConstraint(r, r.getTurn());
 				}
+				
+				Group organizer2 = r.getOrganizer2();
+				if (organizer2 != null){
+					for (Rover rov: rl){
+						if (rov.getGroup() == organizer2)
+							rov.setConstraint(r, r.getTurn());
+					}
+				}
 			}
 			
 		}

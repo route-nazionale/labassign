@@ -25,6 +25,9 @@ public class RoundTable extends Event {
 	/** Turno in cui viene effettuata una tavola rotonda */
 	private int turn = 0;
 	
+	/** Rappresenta il secondo gruppo che organizza la tavola rotonda (se presente, null altrimenti) */
+	private Group organizer2 = null;
+	
 	/**
 	 * Costruttore base per una nuova tavola rotonda, che imposta automaticamente il numero
 	 * massimo di partecipanti ad una tavola rotonda.
@@ -50,8 +53,9 @@ public class RoundTable extends Event {
 	 * @param organizer Gruppo organizzatore della tavola rotonda.
 	 */
 	public RoundTable(String code, String name, 
-			int maxpartecipant, int minpartecipant, Group organizer) {
+			int maxpartecipant, int minpartecipant, Group organizer, Group organizer2) {
 		super(code, name, maxpartecipant, minpartecipant, organizer);
+		this.organizer2 = organizer2;
 	}
 	
 	/**
@@ -76,6 +80,26 @@ public class RoundTable extends Event {
 	public int getTurn(){
 		return this.turn;
 	}
+	
+	/**
+	 * Ritorna il secondo gruppo organizzatore dell'evento
+	 * 
+	 * @return Riferimento al gruppo (Istanza di Group) che effettuera' l'evento
+	 */
+	public Group getOrganizer2() {
+		return organizer2;
+	}
+
+	/**
+	 * Imposta il secondo gruppo che organizzera' l'evento (se presente)
+	 * Impostare a null nel caso in cui non sia presente il secondo gruppo.
+	 * 
+	 * @param organizer Riferimento al gruppo (Istanza di Group) che effettuera' l'evento
+	 */
+	public void setOrganizer2(Group organizer) {
+		this.organizer2 = organizer;
+	}
+	
 
 	@Override
 	protected void updateWorkingDay(int day) {

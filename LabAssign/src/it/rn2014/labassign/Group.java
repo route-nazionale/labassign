@@ -99,4 +99,16 @@ public class Group {
 	public String toString(){
 		return "Gruppo: " + name + " Code: " + code + " Unita: " + unity;
 	}
+	
+	/**
+	 * Effettua la comparazione fra due gruppi
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof Group){
+			Group g = (Group) obj;
+			return (g.code.contentEquals(this.code) && g.unity.contentEquals(this.unity));
+		}
+		return false;
+	}
 }
