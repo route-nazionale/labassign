@@ -218,7 +218,15 @@ public class MySqlConnector {
 				boolean road4 = rs.getBoolean("stradacoraggio4");
 				boolean road5 = rs.getBoolean("stradacoraggio5");
 				
-				RoundTable roundTable = new RoundTable(code, name, maxpartecipant, minpartecipant, group, group2);
+				int overmax = 0, max = 0;
+				switch (maxpartecipant) {
+					case 500: max = 440; overmax = 450; break;
+					case 450: max = 440; overmax = 450; break;
+					case 0: max = 0; overmax = 0; break;
+					default: max = 0; overmax = 0; break;
+				}
+				
+				RoundTable roundTable = new RoundTable(code, name, max, overmax, minpartecipant, group, group2);
 				roundTable.setRoadsPreference(road1, road2, road3, road4, road5);
 				
 				int day = 1;
@@ -292,7 +300,17 @@ public class MySqlConnector {
 				//boolean novice = rs.getBoolean("novizio");
 				boolean novice = false;
 				
-				l = new Lab(code, name, minpartecipant, maxpartecipant, group, novice, handicap, maxage, minage, subcamp);
+				// Impostazione max e overmax partecipants
+				int overmax = 0, max = 0;
+				switch (maxpartecipant) {
+					case 35: max = 28; overmax = 32; break;
+					case 32: max = 28; overmax = 32; break;
+					case 25: max = 23; overmax = 25; break;
+					case 20: max = 18; overmax = 20; break;
+					case 0: max = 0; overmax = 0; break;
+				}
+				
+				l = new Lab(code, name, minpartecipant, max, overmax, group, novice, handicap, maxage, minage, subcamp);
 				l.setRoadsPreference(road1,road2, road3, road4, road5);
 				
 				list.addEvent(l);

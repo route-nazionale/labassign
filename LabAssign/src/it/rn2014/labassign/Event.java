@@ -32,8 +32,10 @@ public class Event implements Comparable<Event> {
 	/** Nome dell'evento */
 	private String name;
 	
-	/** Numero massimo di partecipanti */
+	/** Numero massimo ottimale di partecipanti */
 	private int maxpartecipant;
+	/** Numero massimo ottimale di partecipanti */
+	private int overmaxpartecipant;
 	/** Numero minimo di partecipanti ammesso */
 	private int minpartecipant;
 	
@@ -75,13 +77,14 @@ public class Event implements Comparable<Event> {
 	 * @param minpartecipant Vincolo sul minimo dei paretcipanti
 	 * @param organizer Gruppo organizzatore dell'evento
 	 */
-	public Event(String code, String name, int maxpartecipant, int minpartecipant,
+	public Event(String code, String name, int maxpartecipant, int overmaxpartecipant, int minpartecipant,
 			Group organizer) {
 		super();
 		this.code = code;
 		this.name = name;
 		this.maxpartecipant = maxpartecipant;
 		this.minpartecipant = minpartecipant;
+		this.overmaxpartecipant = overmaxpartecipant;
 		this.organizer = organizer;
 		this.partecipant1 = new ArrayList<>();
 		this.partecipant2 = new ArrayList<>();
@@ -145,9 +148,9 @@ public class Event implements Comparable<Event> {
 	 */
 	public boolean isOverFull(int day) {
 		switch (day) {
-		case 1: return partecipant1.size() >= (maxpartecipant + (maxpartecipant * Parameters.EVENT_PERC_OVERFULL));
-		case 2: return partecipant2.size() >= (maxpartecipant + (maxpartecipant * Parameters.EVENT_PERC_OVERFULL));
-		case 3: return partecipant3.size() >= (maxpartecipant + (maxpartecipant * Parameters.EVENT_PERC_OVERFULL));
+		case 1: return partecipant1.size() >= (overmaxpartecipant);
+		case 2: return partecipant2.size() >= (overmaxpartecipant);
+		case 3: return partecipant3.size() >= (overmaxpartecipant);
 		default: return false;
 		}
 	}

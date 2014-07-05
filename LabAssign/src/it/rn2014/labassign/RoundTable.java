@@ -39,7 +39,7 @@ public class RoundTable extends Event {
 	 */
 	public RoundTable(String code, String name, 
 			int minpartecipant, Group organizer) {
-		super(code, name, Parameters.ROUNDTABLE_MAX_USER, minpartecipant, organizer);
+		super(code, name, Parameters.ROUNDTABLE_MAX_USER, Parameters.ROUNDTABLE_MAX_USER, minpartecipant, organizer);
 	}
 	
 	/**
@@ -53,8 +53,8 @@ public class RoundTable extends Event {
 	 * @param organizer Gruppo organizzatore della tavola rotonda.
 	 */
 	public RoundTable(String code, String name, 
-			int maxpartecipant, int minpartecipant, Group organizer, Group organizer2) {
-		super(code, name, maxpartecipant, minpartecipant, organizer);
+			int maxpartecipant, int overmaxpartecipant, int minpartecipant, Group organizer, Group organizer2) {
+		super(code, name, maxpartecipant, overmaxpartecipant, minpartecipant, organizer);
 		this.organizer2 = organizer2;
 	}
 	

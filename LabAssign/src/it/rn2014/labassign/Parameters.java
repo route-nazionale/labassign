@@ -33,9 +33,9 @@ public class Parameters {
 	public static double SATISFATION_THRESHOLD = 0.80;
 	
 	/** Massimo numero di partecipanti ai laboratori */
-	public static final int LABORATORY_MAX_USER = 35;
+	public static final int LABORATORY_MAX_USER = 28;
 	/** Massimo numero di partecipanti alle tavole rotonde */
-	public static final int ROUNDTABLE_MAX_USER = 500;
+	public static final int ROUNDTABLE_MAX_USER = 450;
 	
 	/** Numero massimo di partecipanti per lo stesso gemellaggio per laboratorio */
 	public static final int LABORATORY_MAX_TWINNING_USER = 3;

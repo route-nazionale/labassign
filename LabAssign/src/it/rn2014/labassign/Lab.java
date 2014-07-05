@@ -48,9 +48,9 @@ public class Lab extends Event {
 	 * @param minage Eta minima
 	 * @param subcamp Sottocampo in cui e' posizionato
 	 */
-	public Lab(String code, String name, int minpartecipant, int maxpartecipant, 
+	public Lab(String code, String name, int minpartecipant, int maxpartecipant, int overmaxpartecipant,
 			Group organizer, boolean novice, boolean handicap, int maxage, int minage, int subcamp) {
-		super(code, name, maxpartecipant, minpartecipant, organizer);
+		super(code, name, maxpartecipant, overmaxpartecipant, minpartecipant, organizer);
 		
 		this.suitablenovice = novice;
 		this.suitablehandicap = handicap;

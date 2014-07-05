@@ -95,7 +95,7 @@ public class Main {
 		System.out.print("OK!\n");
 		
 		// Aggiungo l'evento codici
-		Lab codici = new Lab("CODICI", "CODICI", 0, 1000, null, false, false, 100, 1, 0);
+		Lab codici = new Lab("CODICI", "CODICI", 0, 0, 0, null, false, false, 100, 1, 0);
 		codici.setRoadsPreference(true, true, true, true, true);
 		codici.setEnabled(false);
 		el.addEvent(codici);
