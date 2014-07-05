@@ -48,6 +48,7 @@ public class Main {
 		System.out.println();
 		System.out.println("--------- PARAMETRI ---------");
 		System.out.println("| PRIO_FULL: \t\t" + Parameters.PRIO_FULL);
+		System.out.println("| PRIO_FULL_2: \t\t" + Parameters.PRIO_FULL_2);
 		System.out.println("| PRIO_ROAD: \t\t" + Parameters.PRIO_ROAD);
 		System.out.println("| PRIO_ROAD_2: \t\t" + Parameters.PRIO_ROAD_2);
 		System.out.println("| PRIO_ROAD_3: \t\t" + Parameters.PRIO_ROAD_3);

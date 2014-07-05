@@ -393,10 +393,15 @@ public class Rover implements Comparable<Rover> {
 	 */
 	@Override
 	public int compareTo(Rover arg0) {
-		double sat1 = this.getSatisfaction();
-		double sat2 = arg0.getSatisfaction();
-		if (sat1 < sat2 ) return -1;
-		if (sat1 > sat2 ) return 1;
+//		double sat1 = this.getSatisfaction();
+//		double sat2 = arg0.getSatisfaction();
+//		if (sat1 < sat2 ) return -1;
+//		if (sat1 > sat2 ) return 1;
+//		return 0;
+		if (prio_1 + prio_2 + prio_3 > arg0.prio_1 + arg0.prio_2 + arg0.prio_3)
+			return -1;
+		if (prio_1 + prio_2 + prio_3 < arg0.prio_1 + arg0.prio_2 + arg0.prio_3)
+			return 1;
 		return 0;
 	}
 

@@ -248,7 +248,7 @@ public class MySqlConnector {
 				
 		try {
 			stat = conn.createStatement();
-			ResultSet rs = stat.executeQuery("SELECT * FROM laboratori");
+			ResultSet rs = stat.executeQuery("SELECT * FROM laboratori_copy");
 			
 			Lab l;
 			while(rs.next()){
@@ -322,7 +322,7 @@ public class MySqlConnector {
 				
 				Rover r = rl.getRover(code);
 				if (r == null) {
-					System.err.println("VINCOLO SU RAGAZZO ASSENTE: " + code);
+					System.err.println("\nVINCOLO SU RAGAZZO ASSENTE: " + code);
 					continue;
 				}
 				Event e = null;

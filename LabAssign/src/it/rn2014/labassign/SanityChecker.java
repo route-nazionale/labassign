@@ -41,7 +41,8 @@ public class SanityChecker {
 		try {
 			
 			results = mc.executeRaw(query);
-			qres = Integer.parseInt(results.getString(0));
+			results.next();
+			qres = Integer.parseInt(results.getString(1));
 			
 		} catch (SQLException e) { e.printStackTrace();}
 		
@@ -71,7 +72,8 @@ public class SanityChecker {
 		try {
 			
 			results = mc.executeRaw(query);
-			qres = Integer.parseInt(results.getString(0));
+			results.next();
+			qres = Integer.parseInt(results.getString(1));
 			
 		} catch (SQLException e) { e.printStackTrace();}
 		
@@ -166,7 +168,7 @@ public class SanityChecker {
 	/** Query che controlla se tutti i ragazzi hanno un gruppo presente su DB */
 	private final String ValidGroup = "SELECT COUNT(*) FROM ragazzi WHERE NOT EXISTS " +
 			"(SELECT * FROM gruppi WHERE gruppi.idgruppo = ragazzi.idgruppo AND" +
-			"gruppi.idunita = ragazzi.idunita)";
+			" gruppi.idunita = ragazzi.idunita)";
 
 	
 	/**

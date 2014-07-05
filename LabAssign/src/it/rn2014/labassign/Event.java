@@ -268,8 +268,10 @@ public class Event implements Comparable<Event> {
 		// Condizioni che indicano a quale evento dare priorita'
 		if (this.isStillEmpty(workingday) && !arg0.isStillEmpty(workingday)) return -1;
 		if (!this.isStillEmpty(workingday) && arg0.isStillEmpty(workingday)) return 1;
-		if (l1.size() < l2.size()) return -1;
-		else if (l1.size() > l2.size()) return 1;
+		double rapp1 = (this.maxpartecipant == 0 ? 0 : l1.size()/this.maxpartecipant);
+		double rapp2 = (arg0.maxpartecipant == 0 ? 0 : l2.size()/arg0.maxpartecipant);
+		if (rapp1 < rapp2) return -1;
+		else if (rapp1 > rapp2) return 1;
 		else return 0;
 	}
 
