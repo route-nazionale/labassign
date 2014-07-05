@@ -248,7 +248,7 @@ public class MySqlConnector {
 				
 		try {
 			stat = conn.createStatement();
-			ResultSet rs = stat.executeQuery("SELECT * FROM laboratori_copy");
+			ResultSet rs = stat.executeQuery("SELECT * FROM laboratori");
 			
 			Lab l;
 			while(rs.next()){
@@ -408,19 +408,6 @@ public class MySqlConnector {
 	 * @param el Elenco di Eventi gia' assegnati
 	 */
 	public void sendResult(RoverList rl, EventList el){
-		this.update("DELETE FROM risultati_ragazzi");
-		for (Rover r: rl){
-			String query = "INSERT INTO risultati_ragazzi (codicecensimento, turno1, priorita1, turno2, priorita2, turno3, priorita3, soddisfacimento) VALUES (";
-			query += r.getCode() + ",?," + r.getPriority(1)+ ",?," + r.getPriority(2) + ",?," + r.getPriority(3) + "," + r.getSatisfaction() + ")";
-			java.sql.PreparedStatement p = this.getPrepared(query);
-			try{
-				p.setString(1, r.getEventCode(1));
-				p.setString(2, r.getEventCode(2));
-				p.setString(3, r.getEventCode(3));
-				
-				this.updatePrepared(p);
-			} catch ( SQLException e){ e.printStackTrace(); }
-		}
 		
 		this.update("DELETE FROM risultati_laboratori");
 		for (Event e: el){
@@ -433,6 +420,20 @@ public class MySqlConnector {
 				} catch (SQLException e1) {	e1.printStackTrace(); }
 				this.updatePrepared(p);
 			}
+		}
+		
+		this.update("DELETE FROM risultati_ragazzi");
+		for (Rover r: rl){
+			String query = "INSERT INTO risultati_ragazzi (codicecensimento, turno1, priorita1, turno2, priorita2, turno3, priorita3, soddisfacimento) VALUES (";
+			query += r.getCode() + ",?," + r.getPriority(1)+ ",?," + r.getPriority(2) + ",?," + r.getPriority(3) + "," + r.getSatisfaction() + ")";
+			java.sql.PreparedStatement p = this.getPrepared(query);
+			try{
+				p.setString(1, r.getEventCode(1));
+				p.setString(2, r.getEventCode(2));
+				p.setString(3, r.getEventCode(3));
+				
+				this.updatePrepared(p);
+			} catch ( SQLException e){ e.printStackTrace(); }
 		}
 	}
 	
