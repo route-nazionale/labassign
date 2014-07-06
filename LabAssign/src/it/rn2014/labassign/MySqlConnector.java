@@ -87,7 +87,7 @@ public class MySqlConnector {
 				String idgruppo = rs.getString("idgruppo");
 				String idunita = rs.getString("idunita");
 				// TODO va cambiato il nome nella vista
-				int gemellaggio = rs.getInt("gemellagio");
+				int gemellaggio = rs.getInt("gemellaggio");
 				
 				g = new Group(name, idgruppo, idunita, sottocampo, gemellaggio);
 				list.add(g);
@@ -393,9 +393,10 @@ public class MySqlConnector {
 				}
 			}
 			
-			int limit = (count / 5)+1;
+			int limit = (count / 5) + 1;
 			
 			int current_camp = 1;
+			
 			for (Event e: el){
 				if(e instanceof Lab) { l = (Lab) e;	} else continue;
 				
