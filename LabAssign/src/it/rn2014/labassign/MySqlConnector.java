@@ -140,10 +140,11 @@ public class MySqlConnector {
 				}
 				if (group == null) System.err.println("\nGRUPPO ASSENTE NEL DB! ID: " + idgroup + " UNITA " + idunity);
 				
-				boolean novice = rs.getBoolean("novizio");
+				// Vincolo su novizi disabilitato
+				//boolean novice = rs.getBoolean("novizio");
 				boolean handicap = rs.getBoolean("handicap");
 				
-				Rover r = new Rover(name, surname, code, age, handicap, novice, group);
+				Rover r = new Rover(name, surname, code, age, handicap, false, group);
 				
 				boolean road1 = rs.getBoolean("stradadicoraggio1");
 				boolean road2 = rs.getBoolean("stradadicoraggio2");
