@@ -293,7 +293,7 @@ public class MySqlConnector {
 				boolean road4 = rs.getBoolean("stradadicoraggio4");
 				boolean road5 = rs.getBoolean("stradadicoraggio5");
 				
-				boolean handicap = rs.getBoolean("handicap");
+				boolean handicap = !rs.getBoolean("handicap");
 				
 				// Non disponiamo dell'informazione se un laboratorio e' adatto o meno
 				// ai novizi per cui e' stato disabilitato
