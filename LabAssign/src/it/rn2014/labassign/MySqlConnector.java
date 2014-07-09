@@ -86,7 +86,6 @@ public class MySqlConnector {
 				int sottocampo = rs.getInt("sottocampo");
 				String idgruppo = rs.getString("idgruppo");
 				String idunita = rs.getString("idunita");
-				// TODO va cambiato il nome nella vista
 				int gemellaggio = rs.getInt("gemellaggio");
 				
 				g = new Group(name, idgruppo, idunita, sottocampo, gemellaggio);
@@ -119,7 +118,7 @@ public class MySqlConnector {
 		
 		try {
 			stat = conn.createStatement();
-			ResultSet rs = stat.executeQuery("SELECT * FROM ragazzi_table");
+			ResultSet rs = stat.executeQuery("SELECT * FROM ragazzi_table ORDER BY RAND()");
 			
 			while(rs.next()){
 				

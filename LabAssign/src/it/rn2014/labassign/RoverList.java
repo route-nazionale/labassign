@@ -29,6 +29,8 @@ public class RoverList implements Iterable<Rover> {
 
 	/** Lista di priorità dei rover */
 	private PriorityQueue<Rover> queue;
+	/** IMPLEMENTAZIONE: Lista di priorità dei rover temporanea */
+	private PriorityQueue<Rover> temp_queue = null;
 	
 	/**
 	 * Costruttore che inizializza la lista dei rover da considerare.
@@ -47,12 +49,16 @@ public class RoverList implements Iterable<Rover> {
 	}
 	
 	/**
-	 * Ritorna il rover meno soddisfatto, senza rimuoverlo dalla lista dei rover.
+	 * Ritorna il rover meno soddisfatto, e lo rimuove dalla coda
 	 * 
 	 * @return Il rover meno soddisfatto
 	 */
 	public Rover getRover(){
 		return queue.poll();
+	}
+	
+	public void putRoverUpdated(Rover r){
+		temp_queue.add(r);
 	}
 	
 	/**
@@ -91,16 +97,6 @@ public class RoverList implements Iterable<Rover> {
 		return null;
 	}
 	
-	/**
-	 * Aggiorna un rover di cui è stata modificata l'associazione (e quindi il soddisfacimento) 
-	 * 
-	 * @param e Il rover da aggiornare
-	 */
-	public void updateRover(Rover e){
-		// TODO Qui va controllato...
-		queue.remove(e);
-		queue.offer(e);
-	}
 	
 	/**
 	 * Ritorna il valore di soddisfacimento totale di tutto il sistema.
@@ -141,5 +137,14 @@ public class RoverList implements Iterable<Rover> {
 			i++;
 		}
 		System.out.println("Total Rover " + i);
+	}
+
+	public void beginPriorityGet() {
+		temp_queue = new PriorityQueue<Rover>();
+	}
+	
+	public void endPriorityGet() {
+		queue = temp_queue;
+		temp_queue = null;
 	}
 }

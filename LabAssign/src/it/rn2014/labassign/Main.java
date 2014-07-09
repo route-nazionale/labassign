@@ -119,6 +119,20 @@ public class Main {
 		// Genero l'assegnamento
 		beginningAssignment(rl, el);
 		
+//		rl.beginPriorityGet();
+//		Rover rov;
+//		while((rov = rl.getRover()) != null) {
+//			rov.print();
+//			rl.putRoverUpdated(rov);
+//		}
+//		rl.endPriorityGet();
+		
+		System.out.println("############## COMPLETATO ##############");
+		System.out.println("# SODDISFAZIONE: " + rl.totalSatisfaction());
+		System.out.println("# SU: " + rl.totalMaxSatisfaction());
+		System.out.println("#####");
+		System.out.println("# PERCENTUALE: " + (rl.totalSatisfaction()/rl.totalMaxSatisfaction()));
+		System.out.println("########################################");
 		
 		BufferedReader var = new BufferedReader(new InputStreamReader(System.in));
 		System.out.println("Stampo le schede dei Laboratori? [s/n]");
@@ -156,12 +170,7 @@ public class Main {
 		conn.close();	
 		System.out.print("OK!\n");
 		
-		
 		System.out.println("############## FINE! ##############");
-		System.out.println("# SODDISFAZIONE: " + rl.totalSatisfaction());
-		System.out.println("# SU: " + rl.totalMaxSatisfaction());
-		System.out.println("#####");
-		System.out.println("# PERCENTUALE: " + (rl.totalSatisfaction()/rl.totalMaxSatisfaction()));
 		System.out.println("###################################");
 		
 		/*
@@ -201,7 +210,10 @@ public class Main {
 			el.updateWorkingDay(workingday);
 						
 			// Itero sui rover in archivio
-			for (Rover r : rl){				
+			Rover r;
+			
+			rl.beginPriorityGet();
+			while((r = rl.getRover()) != null){				
 				
 				if (!r.toBeAssigned(workingday)) continue;
 				
@@ -230,8 +242,10 @@ public class Main {
 				} else {
 					r.assignToEvent(workingday, temp, find_prio);
 					el.updateEvent(temp);
+					rl.putRoverUpdated(r);
 				}
 			}
+			rl.endPriorityGet();
 			System.out.print("Completato! :-)\n");
 		}
 	}
