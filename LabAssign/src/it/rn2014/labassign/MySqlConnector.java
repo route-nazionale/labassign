@@ -119,7 +119,7 @@ public class MySqlConnector {
 		
 		try {
 			stat = conn.createStatement();
-			ResultSet rs = stat.executeQuery("SELECT * FROM ragazzi");
+			ResultSet rs = stat.executeQuery("SELECT * FROM ragazzi_table");
 			
 			while(rs.next()){
 				
