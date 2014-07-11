@@ -238,8 +238,15 @@ public class Rover implements Comparable<Rover> {
 				if (day == 2 && !l.getRoadMask(this)) return false;
 				if (day == 2 && !this.assign1.getRoadMask(this)) return false;
 				if (day == 3 && !l.getRoadMask(this)) return false;
+				if (day == 3 && !this.assign1.getRoadMask(this)) return false;
 				if (day == 3 && !this.assign2.getRoadMask(this)) return false;
 				if (day == 3 && (this.assign1.getRoad() == this.assign2.getRoad()) && (this.assign1.getRoad() == l.getRoad())) return false;
+			}
+			
+			if (priority <= Parameters.PRIO_ROAD_3 && day == 2){
+				if (!this.assign1.getRoadMask(this)) return false;
+				if (!l.getRoadMask(this)) return false;
+				if (l.getRoad() == this.assign1.getRoad()) return false;
 			}
 			
 			if (priority <= Parameters.PRIO_ROAD_3 && day == 3){
@@ -295,14 +302,19 @@ public class Rover implements Comparable<Rover> {
 			}
 			if (priority <= Parameters.PRIO_ONE_LAB && day == 3 && (this.assign2 instanceof RoundTable) && (this.assign1 instanceof RoundTable)) return false;
 			
-			if (priority <= Parameters.PRIO_ROAD && !r.getRoadMask(this)) return false;
-			
 			if (priority <= Parameters.PRIO_ROAD_2){
 				if (day == 2 && !r.getRoadMask(this)) return false;
 				if (day == 2 && !this.assign1.getRoadMask(this)) return false;
 				if (day == 3 && !r.getRoadMask(this)) return false;
+				if (day == 3 && !this.assign1.getRoadMask(this)) return false;
 				if (day == 3 && !this.assign2.getRoadMask(this)) return false;
 				if (day == 3 && (this.assign1.getRoad() == this.assign2.getRoad()) && (this.assign1.getRoad() == r.getRoad())) return false;
+			}
+			
+			if (priority <= Parameters.PRIO_ROAD_3 && day == 2){
+				if (!this.assign1.getRoadMask(this)) return false;
+				if (!r.getRoadMask(this)) return false;
+				if (r.getRoad() == this.assign1.getRoad()) return false;
 			}
 			
 			if (priority <= Parameters.PRIO_ROAD_3 && day == 3){
