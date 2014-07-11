@@ -174,7 +174,7 @@ public class MySqlConnector {
 			ResultSet rs = stat.executeQuery("SELECT * FROM tavolerotonde");
 			while(rs.next()){
 
-				String name = rs.getString("nome");
+				String name = rs.getString("titolo");
 				String code = rs.getString("codice");
 				
 				String organizer = rs.getString("organizzatore");
