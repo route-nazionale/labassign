@@ -16,8 +16,9 @@
  */
 package it.rn2014.labassign;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
-import java.util.PriorityQueue;
 
 /**
  * Classe che rappresenta una collezione di Rover che vengono considerati per
@@ -28,15 +29,13 @@ import java.util.PriorityQueue;
 public class RoverList implements Iterable<Rover> {
 
 	/** Lista di priorità dei rover */
-	private PriorityQueue<Rover> queue;
-	/** IMPLEMENTAZIONE: Lista di priorità dei rover temporanea */
-	private PriorityQueue<Rover> temp_queue = null;
+	private ArrayList<Rover> queue;
 	
 	/**
 	 * Costruttore che inizializza la lista dei rover da considerare.
 	 */
 	public RoverList(){
-		queue = new PriorityQueue<>();
+		queue = new ArrayList<Rover>();
 	}
 	
 	/**
@@ -49,17 +48,21 @@ public class RoverList implements Iterable<Rover> {
 	}
 	
 	/**
-	 * Ritorna il rover meno soddisfatto, e lo rimuove dalla coda
+	 * Ritorna il primo rover
 	 * 
-	 * @return Il rover meno soddisfatto
+	 * @return Il primo rover
 	 */
 	public Rover getRover(){
-		return queue.poll();
+		return queue.get(0);
 	}
 	
-	public void putRoverUpdated(Rover r){
-		temp_queue.add(r);
+	/**
+	 * Ordina la lista dei ragazzi in funzione dei valori di priorita' risultanti
+	 */
+	public void sort(){
+		Collections.sort(queue);
 	}
+	
 	
 	/**
 	 * Ritorna il rover dato il codice censimento in input
@@ -83,20 +86,6 @@ public class RoverList implements Iterable<Rover> {
 		return null;
 	}
 	
-	/**
-	 * Ritorna il rover meno soddisfatto, e che ha indicato la strada di coraggio indicata come
-	 * parametro.
-	 * 
-	 * @param road La strada di coraggio desiderata 
-	 * @return Il primo rover meno soddisfatto
-	 */
-	public Rover getRoverByRoad(int road){
-		for (Rover r : queue){
-			if (r.getRoad(road)) return r;
-		}
-		return null;
-	}
-	
 	
 	/**
 	 * Ritorna il valore di soddisfacimento totale di tutto il sistema.
@@ -116,7 +105,7 @@ public class RoverList implements Iterable<Rover> {
 	 * @return Il numero che rappresenta il soddisfacimento massimo del sistema
 	 */
 	public double totalMaxSatisfaction(){
-		return queue.size()*queue.peek().getMaxSatisfaction();
+		return queue.size()*queue.get(0).getMaxSatisfaction();
 	}
 
 	/**
@@ -137,14 +126,5 @@ public class RoverList implements Iterable<Rover> {
 			i++;
 		}
 		System.out.println("Total Rover " + i);
-	}
-
-	public void beginPriorityGet() {
-		temp_queue = new PriorityQueue<Rover>();
-	}
-	
-	public void endPriorityGet() {
-		queue = temp_queue;
-		temp_queue = null;
 	}
 }

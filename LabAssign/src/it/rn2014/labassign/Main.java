@@ -90,6 +90,7 @@ public class Main {
 		RoverList rl = conn.getRovers(gl);
 		System.out.print("OK!\n");
 		
+		
 		System.out.print("Recupero i laboratori dal DB...");
 		EventList el = conn.getLabs(gl);
 		System.out.print("OK!\n");
@@ -126,6 +127,7 @@ public class Main {
 //			rl.putRoverUpdated(rov);
 //		}
 //		rl.endPriorityGet();
+		
 		
 		System.out.println("############## COMPLETATO ##############");
 		System.out.println("# SODDISFAZIONE: " + rl.totalSatisfaction());
@@ -210,10 +212,8 @@ public class Main {
 			el.updateWorkingDay(workingday);
 						
 			// Itero sui rover in archivio
-			Rover r;
 			
-			rl.beginPriorityGet();
-			while((r = rl.getRover()) != null){				
+			for (Rover r: rl){				
 				
 				if (!r.toBeAssigned(workingday)) continue;
 				
@@ -242,10 +242,9 @@ public class Main {
 				} else {
 					r.assignToEvent(workingday, temp, find_prio);
 					el.updateEvent(temp);
-					rl.putRoverUpdated(r);
 				}
 			}
-			rl.endPriorityGet();
+			rl.sort();
 			System.out.print("Completato! :-)\n");
 		}
 	}
