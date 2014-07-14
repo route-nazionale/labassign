@@ -112,7 +112,7 @@ public class SanityChecker {
 			+ "stradadicoraggio3 + stradadicoraggio4 + stradadicoraggio5 != 3";
 
 	/** Query che assicura che un lab abbia l'eta minima minore dell'eta massima */
-	private final String MaxMinAge = "SELECT COUNT(id) FROM `laboratori` WHERE etamassima < etaminima;";
+	private final String MaxMinAge = "SELECT COUNT(*) FROM `laboratori` WHERE etamassima < etaminima;";
 
 	/** Query che assicura che una tavola rotonda sia impostata sul una e solo una strada di coraggio */
 	private final String StradeEvents = "SELECT COUNT( * )"

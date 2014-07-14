@@ -272,6 +272,7 @@ public class MySqlConnector {
 				if(organizer.contains("RS")){
 					String idgruppo = rs.getString("idgruppo");
 					String idunita = rs.getString("idunita");
+					if (idgruppo != null && idunita != null){
 					for (Group g: gl){
 						if (g.sameGroup(idgruppo, idunita)){
 							group = g;
@@ -279,6 +280,7 @@ public class MySqlConnector {
 						}
 					}
 					if (group == null) System.err.println("\nGRUPPO ASSENTE NEL DB! ID: " + idgruppo + " UNITA " + idunita);
+					}
 				}			
 				
 				int maxpartecipant = rs.getInt("maxpartecipanti");
