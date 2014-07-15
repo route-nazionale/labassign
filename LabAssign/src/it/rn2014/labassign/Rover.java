@@ -302,6 +302,8 @@ public class Rover implements Comparable<Rover> {
 			}
 			if (priority <= Parameters.PRIO_ONE_LAB && day == 3 && (this.assign2 instanceof RoundTable) && (this.assign1 instanceof RoundTable)) return false;
 			
+			if (priority <= Parameters.PRIO_ROAD && !r.getRoadMask(this)) return false;
+			
 			if (priority <= Parameters.PRIO_ROAD_2){
 				if (day == 2 && !r.getRoadMask(this)) return false;
 				if (day == 2 && !this.assign1.getRoadMask(this)) return false;
