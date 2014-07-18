@@ -118,7 +118,7 @@ public class MySqlConnector {
 		
 		try {
 			stat = conn.createStatement();
-			ResultSet rs = stat.executeQuery("SELECT * FROM ragazzi_table ORDER BY RAND()");
+			ResultSet rs = stat.executeQuery("SELECT * FROM ragazzi ORDER BY RAND()");
 			
 			while(rs.next()){
 				
